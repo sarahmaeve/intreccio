@@ -1,0 +1,28 @@
+{
+  "id": "004-avere",
+  "title": "Avere: possession, auxiliary, idioms",
+  "level": "A1-reference",
+  "topic_area": "Italian grammar",
+  "grammar_features_introduced": [
+    "present tense of avere: ho, hai, ha, abbiamo, avete, hanno",
+    "the silent h in ho/hai/ha/hanno and its orthographic job (disambiguation from o/ai/a/anno)",
+    "possession syntax: subject + avere + direct object",
+    "avere as passato-prossimo auxiliary for transitive verbs",
+    "past-participle formation: -ato (-are), -uto (-ere), -ito (-ire)",
+    "no participle agreement with avere (contrast with essere, previewed)",
+    "avere + noun idioms: fame, sete, sonno, freddo, caldo, paura, fretta, ragione, torto, bisogno di, voglia di",
+    "age expressed with avere, not essere"
+  ],
+  "pronunciation_features_introduced": [
+    "silent h in verb forms"
+  ],
+  "cognate_patterns_showcased": [
+    "French avoir ↔ Italian avere (tight parallel)",
+    "French avoir + noun ↔ Italian avere + noun idioms",
+    "age: j’ai X ans ↔ ho X anni"
+  ],
+  "prerequisites": [
+    "003-essere-stare"
+  ],
+  "notes": "Fourth A1 grammar lesson, paired with 003-essere-stare. Focuses on avere’s three roles: possession, auxiliary, idiomatic 'be + adjective' collocations. The silent-h section is given its own subsection because it’s a pedagogically load-bearing piece that learners commonly underrate. French speakers get a short 'you already know most of this' paragraph at the end; the main new thing for them is orthographic (writing the silent h)."
+}

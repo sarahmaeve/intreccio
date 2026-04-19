@@ -251,6 +251,94 @@ fn collect_content_files(dir: &Path, out: &mut Vec<PathBuf>) -> Result<(), std::
     Ok(())
 }
 
+// ── HTML-aware typography ───────────────────────────────────────────────
+
+/// Apply typography fixes to an HTML source string, touching only text
+/// nodes — not tag names, attribute names, or attribute values.
+///
+/// The implementation is a small state machine: start in "text" mode,
+/// switch to "tag" mode at the first `<`, pass everything through
+/// unchanged until the matching `>`, then switch back. Fix rules apply
+/// only inside the text-mode runs.
+///
+/// This is a lightweight alternative to full HTML parsing. It handles
+/// the well-formed HTML our content produces — the edge cases it can't
+/// cope with (apostrophes inside CDATA, script or style blocks with
+/// inline content) are already forbidden by the CSP.
+pub fn fix_html(html: &str, rules: &dyn TypographyRules) -> String {
+    let mut out = String::with_capacity(html.len());
+    let bytes = html.as_bytes();
+    let mut pos = 0;
+
+    while pos < bytes.len() {
+        if bytes[pos] == b'<' {
+            // Tag mode: copy through to the matching `>`.
+            match html[pos..].find('>') {
+                Some(rel_end) => {
+                    let end = pos + rel_end + 1;
+                    out.push_str(&html[pos..end]);
+                    pos = end;
+                }
+                None => {
+                    // Malformed: emit the rest verbatim.
+                    out.push_str(&html[pos..]);
+                    return out;
+                }
+            }
+        } else {
+            // Text mode: apply rules up to the next `<` (or end).
+            let next = html[pos..]
+                .find('<')
+                .map(|i| pos + i)
+                .unwrap_or(bytes.len());
+            let text = &html[pos..next];
+            out.push_str(&rules.fix_line(text));
+            pos = next;
+        }
+    }
+
+    out
+}
+
+/// Fix typography in all `.html` files under `content_dir`, touching
+/// only text nodes. Returns the count of files modified.
+pub fn fix_html_files(
+    content_dir: &Path,
+    rules: &dyn TypographyRules,
+) -> Result<usize, std::io::Error> {
+    let mut files: Vec<PathBuf> = Vec::new();
+    collect_html_files(content_dir, &mut files)?;
+    files.sort();
+
+    let mut count = 0;
+    for file in &files {
+        let original = std::fs::read_to_string(file)?;
+        let fixed = fix_html(&original, rules);
+        if fixed != original {
+            std::fs::write(file, &fixed)?;
+            count += 1;
+        }
+    }
+    Ok(count)
+}
+
+fn collect_html_files(dir: &Path, out: &mut Vec<PathBuf>) -> Result<(), std::io::Error> {
+    for entry in std::fs::read_dir(dir)? {
+        let entry = entry?;
+        let path = entry.path();
+
+        if path.is_dir() {
+            collect_html_files(&path, out)?;
+            continue;
+        }
+
+        if path.extension().and_then(|e| e.to_str()) == Some("html") {
+            out.push(path);
+        }
+    }
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -367,5 +455,103 @@ mod tests {
         assert!(rules_for_language("it").is_some());
         assert!(rules_for_language("it-IT").is_some());
         assert!(rules_for_language("fr-FR").is_none());
+    }
+
+    // ── HTML-aware fixing ──────────────────────────────────────────
+
+    #[test]
+    fn fix_html_touches_text_outside_tags() {
+        let html = r#"<p>l'acqua è pulita</p>"#;
+        let fixed = fix_html(html, &ItalianTypography);
+        assert_eq!(fixed, "<p>l\u{2019}acqua è pulita</p>");
+    }
+
+    #[test]
+    fn fix_html_leaves_attribute_values_alone() {
+        // Even if an attribute value contained an ASCII apostrophe
+        // (say, inside a data-* or aria-* attr), it must stay intact.
+        let html = r#"<span data-it="l'acqua">l'acqua</span>"#;
+        let fixed = fix_html(html, &ItalianTypography);
+        // The attribute value is untouched (still ASCII apostrophe)...
+        assert!(fixed.contains("data-it=\"l'acqua\""));
+        // ...while the text node between the tags is fixed.
+        assert!(fixed.contains(">l\u{2019}acqua<"));
+    }
+
+    #[test]
+    fn fix_html_leaves_tag_names_and_attribute_names_alone() {
+        let html = r#"<p class="vocab-it"><span lang="it">un'altra</span></p>"#;
+        let fixed = fix_html(html, &ItalianTypography);
+        assert!(fixed.contains(r#"<p class="vocab-it">"#));
+        assert!(fixed.contains(r#"<span lang="it">"#));
+        assert!(fixed.contains("un\u{2019}altra"));
+    }
+
+    #[test]
+    fn fix_html_handles_multiple_apostrophes_across_tags() {
+        let html = r#"<p>l'acqua, <span lang="it">dell'Impero</span>, c'è</p>"#;
+        let fixed = fix_html(html, &ItalianTypography);
+        assert_eq!(fixed.matches('\u{2019}').count(), 3);
+        assert!(!fixed.contains("l'acqua"));
+        assert!(!fixed.contains("dell'Impero"));
+        assert!(!fixed.contains("c'è"));
+    }
+
+    #[test]
+    fn fix_html_handles_three_dot_ellipsis_in_text() {
+        let html = r#"<p>Basta... non importa</p>"#;
+        let fixed = fix_html(html, &ItalianTypography);
+        assert_eq!(fixed, "<p>Basta\u{2026} non importa</p>");
+    }
+
+    #[test]
+    fn fix_html_passes_through_malformed_open_tag() {
+        // A bare `<` with no closing `>` is copied as-is.
+        let html = "plain text < and continues l'acqua";
+        let fixed = fix_html(html, &ItalianTypography);
+        // Everything up to the bare < is fixed; from there on, verbatim.
+        assert!(fixed.starts_with("plain text "));
+        // After the malformed tag, nothing gets processed.
+        assert!(fixed.contains("l'acqua"));
+        // The literal < is preserved.
+        assert!(fixed.contains("<"));
+    }
+
+    #[test]
+    fn fix_html_files_roundtrip() {
+        let dir = tempfile::tempdir().unwrap();
+        let path = dir.path().join("lesson.html");
+        std::fs::write(&path, r#"<p><span lang="it">un'altra volta</span></p>"#).unwrap();
+
+        assert_eq!(fix_html_files(dir.path(), &ItalianTypography).unwrap(), 1);
+
+        let out = std::fs::read_to_string(&path).unwrap();
+        assert!(out.contains("un\u{2019}altra"));
+        assert!(!out.contains("un'altra"));
+        // Tags intact.
+        assert!(out.contains(r#"<span lang="it">"#));
+
+        // Re-run is a no-op.
+        assert_eq!(fix_html_files(dir.path(), &ItalianTypography).unwrap(), 0);
+    }
+
+    #[test]
+    fn fix_html_files_skips_non_html() {
+        let dir = tempfile::tempdir().unwrap();
+        std::fs::write(dir.path().join("keep.txt"), "l'acqua").unwrap();
+        std::fs::write(dir.path().join("edit.html"), "<p>l'acqua</p>").unwrap();
+
+        fix_html_files(dir.path(), &ItalianTypography).unwrap();
+
+        // .txt not touched by fix_html_files (only .html files).
+        assert_eq!(
+            std::fs::read_to_string(dir.path().join("keep.txt")).unwrap(),
+            "l'acqua",
+        );
+        assert!(
+            std::fs::read_to_string(dir.path().join("edit.html"))
+                .unwrap()
+                .contains("l\u{2019}acqua"),
+        );
     }
 }

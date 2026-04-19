@@ -3,12 +3,12 @@
     {
       "it": "la pasta non è un piatto",
       "fr": "les pâtes ne sont pas un plat",
-      "en": "pasta isn't one dish"
+      "en": "pasta isn’t one dish"
     },
     {
       "it": "è una famiglia di piatti",
-      "fr": "c'est une famille de plats",
-      "en": "it's a family of dishes"
+      "fr": "c’est une famille de plats",
+      "en": "it’s a family of dishes"
     },
     {
       "it": "più di trecento formati",
@@ -17,8 +17,8 @@
     },
     {
       "it": "Per gli italiani è il contrario",
-      "fr": "pour les Italiens c'est l'inverse",
-      "en": "for Italians it's the opposite"
+      "fr": "pour les Italiens c’est l’inverse",
+      "en": "for Italians it’s the opposite"
     },
     {
       "it": "ogni formato di pasta ha i suoi sughi",
@@ -32,7 +32,7 @@
     },
     {
       "it": "è tra pasta lunga e pasta corta",
-      "fr": "c'est entre pâtes longues et pâtes courtes",
+      "fr": "c’est entre pâtes longues et pâtes courtes",
       "en": "is between long pasta and short pasta"
     },
     {
@@ -81,9 +81,9 @@
       "en": "wider ribbons"
     },
     {
-      "it": "gli spaghetti alla chitarra dell'Abruzzo",
+      "it": "gli spaghetti alla chitarra dell’Abruzzo",
       "fr": "les spaghetti alla chitarra des Abruzzes",
-      "en": "Abruzzo's spaghetti alla chitarra"
+      "en": "Abruzzo’s spaghetti alla chitarra"
     },
     {
       "it": "La pasta corta",
@@ -151,8 +151,8 @@
       "en": "smooth, oily, emulsified sauces"
     },
     {
-      "it": "l'olio",
-      "fr": "l'huile",
+      "it": "l’olio",
+      "fr": "l’huile",
       "en": "oil"
     },
     {
@@ -161,8 +161,8 @@
       "en": "carbonara"
     },
     {
-      "it": "l'aglio e olio",
-      "fr": "l'aglio e olio (ail et huile)",
+      "it": "l’aglio e olio",
+      "fr": "l’aglio e olio (ail et huile)",
       "en": "aglio e olio (garlic and oil)"
     },
     {
@@ -181,8 +181,8 @@
       "en": "ragù alla bolognese"
     },
     {
-      "it": "l'arrabbiata",
-      "fr": "l'arrabbiata (sauce pimentée)",
+      "it": "l’arrabbiata",
+      "fr": "l’arrabbiata (sauce pimentée)",
       "en": "arrabbiata (spicy sauce)"
     },
     {
@@ -217,7 +217,7 @@
     },
     {
       "it": "è il sugo più diffuso",
-      "fr": "c'est la sauce la plus répandue",
+      "fr": "c’est la sauce la plus répandue",
       "en": "is the most widespread sauce"
     },
     {
@@ -256,8 +256,8 @@
       "en": "black pepper"
     },
     {
-      "it": "nient'altro",
-      "fr": "rien d'autre",
+      "it": "nient’altro",
+      "fr": "rien d’autre",
       "en": "nothing else"
     },
     {
@@ -266,12 +266,12 @@
       "en": "additions are heresies"
     },
     {
-      "it": "L'amatriciana",
-      "fr": "l'amatriciana",
+      "it": "L’amatriciana",
+      "fr": "l’amatriciana",
       "en": "amatriciana"
     },
     {
-      "it": "anch'essa romana",
+      "it": "anch’essa romana",
       "fr": "elle aussi romaine",
       "en": "also Roman"
     },
@@ -292,7 +292,7 @@
     },
     {
       "it": "è la più semplice",
-      "fr": "c'est la plus simple",
+      "fr": "c’est la plus simple",
       "en": "is the simplest"
     },
     {
@@ -301,8 +301,8 @@
       "en": "and perhaps the hardest to execute well"
     },
     {
-      "it": "è la mantecatura con l'acqua di cottura",
-      "fr": "c'est le montage avec l'eau de cuisson",
+      "it": "è la mantecatura con l’acqua di cottura",
+      "fr": "c’est le montage avec l’eau de cuisson",
       "en": "is the emulsion with pasta-cooking water"
     },
     {
@@ -322,7 +322,7 @@
     },
     {
       "it": "è il sugo crudo per eccellenza",
-      "fr": "c'est la sauce crue par excellence",
+      "fr": "c’est la sauce crue par excellence",
       "en": "is the raw sauce par excellence"
     },
     {
@@ -407,7 +407,7 @@
     },
     {
       "it": "è un ingrediente",
-      "fr": "c'est un ingrédient",
+      "fr": "c’est un ingrédient",
       "en": "is an ingredient"
     },
     {
@@ -444,6 +444,81 @@
       "it": "Cucinare",
       "fr": "cuisiner",
       "en": "to cook (as an activity)"
+    },
+    {
+      "it": "gli spaghetti alla chitarra dell'Abruzzo",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "l'olio",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "l'aglio e olio",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "l'arrabbiata",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "nient'altro",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "L'amatriciana",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "anch'essa romana",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "è la mantecatura con l'acqua di cottura",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "il pomodoro è arrivato dall'America",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "arrivare",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "partire",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "diventare",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "sono arrivato",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "è diventato famoso",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "ho cucinato la pasta",
+      "fr": "",
+      "en": ""
     }
   ]
 }

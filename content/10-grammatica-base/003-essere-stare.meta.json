@@ -1,0 +1,25 @@
+{
+  "id": "003-essere-stare",
+  "title": "Essere e stare: due verbi per \"to be\"",
+  "level": "A1-reference",
+  "topic_area": "Italian grammar",
+  "grammar_features_introduced": [
+    "present tense of essere: sono, sei, è, siamo, siete, sono",
+    "the sono 1sg/3pl syncretism and how context disambiguates",
+    "present tense of stare: sto, stai, sta, stiamo, state, stanno",
+    "irregularity of stare (and parallel fare, dare)",
+    "semantic split between essere (identity, origin, traits, feelings, time, neutral location) and stare (health, progressive, stare per, fixed expressions, colloquial location)",
+    "stare + gerundio progressive construction",
+    "gerundio formation (-are → -ando, -ere/-ire → -endo)",
+    "preview of essere as passato-prossimo auxiliary"
+  ],
+  "pronunciation_features_introduced": [
+    "è with grave accent vs e without (distinct words, distinct sounds)"
+  ],
+  "cognate_patterns_showcased": [],
+  "prerequisites": [
+    "001-articoli-determinativi",
+    "002-articoli-indeterminativi"
+  ],
+  "notes": "Third A1 grammar lesson. Motivated by the sono syncretism question that arose while reading the cooking chapter — this lesson makes the 1sg/3pl collision explicit, then pivots to the broader essere/stare split. Spanish speakers get a dedicated comparison section since their ser/estar instincts don’t line up exactly with Italian. Ends with a forward reference to the avere auxiliary lesson."
+}

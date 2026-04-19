@@ -2,8 +2,8 @@
   "items": [
     {
       "it": "La cucina italiana non esiste. Esistono le cucine italiane",
-      "fr": "la cuisine italienne n'existe pas. Il existe des cuisines italiennes",
-      "en": "Italian cuisine doesn't exist. Italian cuisines exist"
+      "fr": "la cuisine italienne n’existe pas. Il existe des cuisines italiennes",
+      "en": "Italian cuisine doesn’t exist. Italian cuisines exist"
     },
     {
       "it": "Il paese è stato unificato",
@@ -66,8 +66,8 @@
       "en": "taleggio"
     },
     {
-      "it": "l'asiago",
-      "fr": "l'asiago",
+      "it": "l’asiago",
+      "fr": "l’asiago",
       "en": "asiago"
     },
     {
@@ -101,7 +101,7 @@
       "en": "of Parma ham"
     },
     {
-      "it": "dell'aceto balsamico tradizionale",
+      "it": "dell’aceto balsamico tradizionale",
       "fr": "du vinaigre balsamique traditionnel",
       "en": "of traditional balsamic vinegar"
     },
@@ -122,8 +122,8 @@
     },
     {
       "it": "non è una battuta",
-      "fr": "ce n'est pas une blague",
-      "en": "it's not a joke"
+      "fr": "ce n’est pas une blague",
+      "en": "it’s not a joke"
     },
     {
       "it": "La cucina toscana",
@@ -206,8 +206,8 @@
       "en": "carbonara"
     },
     {
-      "it": "l'amatriciana",
-      "fr": "l'amatriciana",
+      "it": "l’amatriciana",
+      "fr": "l’amatriciana",
       "en": "amatriciana"
     },
     {
@@ -216,8 +216,8 @@
       "en": "cacio e pepe"
     },
     {
-      "it": "l'abbacchio",
-      "fr": "l'agneau de lait",
+      "it": "l’abbacchio",
+      "fr": "l’agneau de lait",
       "en": "milk-fed lamb"
     },
     {
@@ -281,8 +281,8 @@
       "en": "Bari-style focaccia"
     },
     {
-      "it": "la più abbondante d'Italia",
-      "fr": "la plus abondante d'Italie",
+      "it": "la più abbondante d’Italia",
+      "fr": "la plus abondante d’Italie",
       "en": "the most abundant in Italy"
     },
     {
@@ -407,8 +407,78 @@
     },
     {
       "it": "la storia",
-      "fr": "l'histoire",
+      "fr": "l’histoire",
       "en": "history / the story"
+    },
+    {
+      "it": "Al Nord",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "la cucina è più ricca",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "l'asiago",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "la terra del Parmigiano Reggiano",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "del Prosciutto di Parma",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "dell'Aceto Balsamico Tradizionale",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "in Emilia si mangia meglio che nel resto d'Italia",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "della ribollita",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "della panzanella",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "l'amatriciana",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "l'abbacchio",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "Al Sud il clima è mediterraneo",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "la Mozzarella di Bufala",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "la più abbondante d'Italia",
+      "fr": "",
+      "en": ""
     }
   ]
 }

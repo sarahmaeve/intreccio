@@ -38,10 +38,20 @@ pub fn normalize_for_hash(text: &str) -> String {
         .trim()
         .to_string();
 
-    if trimmed.is_empty() {
+    // Apostrophe canonicalization: U+2019 (typographic) and U+0027 (ASCII)
+    // both flatten to ASCII for hashing. Two consequences:
+    //   1. A typography pass that replaces ASCII `'` with U+2019 inside
+    //      spans does NOT invalidate already-synthesized drill MP3s —
+    //      their filenames stay the same across the orthographic cleanup.
+    //   2. Both forms produce identical drill audio, which is correct:
+    //      they represent the same phoneme sequence, and the Google Cloud
+    //      TTS API treats them equivalently.
+    let canonical = trimmed.replace('\u{2019}', "'");
+
+    if canonical.is_empty() {
         collapsed
     } else {
-        trimmed
+        canonical
     }
 }
 
@@ -59,7 +69,12 @@ pub fn normalize_for_hash(text: &str) -> String {
 /// language-specific pre-processor before calling the TTS API.
 pub fn normalize_for_tts(text: &str) -> String {
     let hash_form = normalize_for_hash(text);
-    strip_parenthetical_roman_numerals(&hash_form)
+    let stripped = strip_parenthetical_roman_numerals(&hash_form);
+    // The hash form uses ASCII apostrophes for stability. Convert back
+    // to typographic U+2019 before handing the string to the TTS API,
+    // so the voice receives well-typeset Italian — matches what the
+    // rendered HTML shows the reader.
+    stripped.replace('\'', "\u{2019}")
 }
 
 /// Collapse all runs of Unicode whitespace to single ASCII spaces.
@@ -217,8 +232,33 @@ mod tests {
     }
 
     #[test]
-    fn hash_preserves_interior_apostrophe() {
-        assert_eq!(normalize_for_hash("l\u{2019}acqua"), "l\u{2019}acqua");
+    fn hash_canonicalizes_apostrophes_to_ascii() {
+        // Both ASCII and typographic apostrophes hash to the same form.
+        // This is what lets a typography pass replace ASCII with U+2019
+        // in HTML without invalidating already-synthesized drill MP3s.
+        assert_eq!(normalize_for_hash("l'acqua"), "l'acqua");
+        assert_eq!(normalize_for_hash("l\u{2019}acqua"), "l'acqua");
+        assert_eq!(
+            normalize_for_hash("l'acqua"),
+            normalize_for_hash("l\u{2019}acqua"),
+        );
+        // Several real-world examples in one go.
+        for word in &[
+            "un'altra",
+            "dell'Impero",
+            "c'è",
+            "vent'anni",
+            "d'Italia",
+            "all'ultimo momento",
+        ] {
+            let ascii = word.to_string();
+            let curly = word.replace('\'', "\u{2019}");
+            assert_eq!(
+                normalize_for_hash(&ascii),
+                normalize_for_hash(&curly),
+                "{word} should hash the same in ASCII and typographic forms",
+            );
+        }
     }
 
     #[test]
@@ -285,6 +325,15 @@ mod tests {
         // Expansion of standalone Roman numerals (XV secolo → quindicesimo
         // secolo) is language-specific and lives in the root binary.
         assert_eq!(normalize_for_tts("XV secolo"), "XV secolo");
+    }
+
+    #[test]
+    fn tts_emits_typographic_apostrophes() {
+        // The TTS API gets well-typeset Italian regardless of how the
+        // author wrote the apostrophe in the source.
+        assert_eq!(normalize_for_tts("l'acqua"), "l\u{2019}acqua");
+        assert_eq!(normalize_for_tts("l\u{2019}acqua"), "l\u{2019}acqua");
+        assert_eq!(normalize_for_tts("un'altra volta"), "un\u{2019}altra volta");
     }
 
     // ── is_drillable ────────────────────────────────────────────────

@@ -13,7 +13,7 @@
     {
       "it": "sono gli ingredienti",
       "fr": "ce sont les ingrédients",
-      "en": "it's the ingredients"
+      "en": "it’s the ingredients"
     },
     {
       "it": "Devono essere freschi",
@@ -26,9 +26,9 @@
       "en": "in season"
     },
     {
-      "it": "è un'altra cucina",
-      "fr": "c'est une autre cuisine",
-      "en": "it's a different cuisine"
+      "it": "è un’altra cucina",
+      "fr": "c’est une autre cuisine",
+      "en": "it’s a different cuisine"
     },
     {
       "it": "La dispensa italiana",
@@ -36,8 +36,8 @@
       "en": "the Italian pantry"
     },
     {
-      "it": "L'olio d'oliva extravergine",
-      "fr": "l'huile d'olive extra-vierge",
+      "it": "L’olio d’oliva extravergine",
+      "fr": "l’huile d’olive extra-vierge",
       "en": "extra-virgin olive oil"
     },
     {
@@ -96,7 +96,7 @@
       "en": "in Liguria"
     },
     {
-      "it": "all'ultimo momento",
+      "it": "all’ultimo momento",
       "fr": "au dernier moment",
       "en": "at the last moment"
     },
@@ -131,8 +131,8 @@
       "en": "sage"
     },
     {
-      "it": "L'origano",
-      "fr": "l'origan",
+      "it": "L’origano",
+      "fr": "l’origan",
       "en": "oregano"
     },
     {
@@ -141,18 +141,18 @@
       "en": "in tomato sauces"
     },
     {
-      "it": "l'aglio",
-      "fr": "l'ail",
+      "it": "l’aglio",
+      "fr": "l’ail",
       "en": "garlic"
     },
     {
       "it": "la cipolla",
-      "fr": "l'oignon",
+      "fr": "l’oignon",
       "en": "onion"
     },
     {
       "it": "La cipolla",
-      "fr": "l'oignon",
+      "fr": "l’oignon",
       "en": "onion"
     },
     {
@@ -162,7 +162,7 @@
     },
     {
       "it": "è la base del soffritto",
-      "fr": "c'est la base du soffritto",
+      "fr": "c’est la base du soffritto",
       "en": "is the base of the soffritto"
     },
     {
@@ -193,12 +193,12 @@
     {
       "it": "Il pecorino",
       "fr": "le pecorino",
-      "en": "pecorino (sheep's-milk cheese)"
+      "en": "pecorino (sheep’s-milk cheese)"
     },
     {
       "it": "latte di pecora",
       "fr": "lait de brebis",
-      "en": "sheep's milk"
+      "en": "sheep’s milk"
     },
     {
       "it": "il pecorino romano",
@@ -213,7 +213,7 @@
     {
       "it": "la fior di latte",
       "fr": "la fior di latte (mozzarella au lait de vache)",
-      "en": "fior di latte (cow's-milk mozzarella)"
+      "en": "fior di latte (cow’s-milk mozzarella)"
     },
     {
       "it": "quella della pizza",
@@ -324,6 +324,51 @@
       "it": "la pancia",
       "fr": "le ventre",
       "en": "the belly"
+    },
+    {
+      "it": "è un'altra cucina",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "L'olio d'oliva extravergine",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "al Sud",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "all'ultimo momento",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "L'origano",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "l'aglio",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "Il Parmigiano Reggiano",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "il Pecorino Romano",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "la Mozzarella di Bufala",
+      "fr": "",
+      "en": ""
     }
   ]
 }

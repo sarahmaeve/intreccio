@@ -22,11 +22,24 @@ description = "The four indefinite article forms: un, uno, una, un' — and the 
 type = "weave"
 subtitle = "A1 reference · grammar foundations"
 
+[[sections.pages]]
+slug = "003-essere-stare"
+title = "Essere e stare: due verbi per \"to be\""
+description = "Italian's two verbs for 'to be,' how they split by meaning, and the sono 1sg/3pl syncretism."
+type = "weave"
+subtitle = "A1 reference · core verbs"
+
+[[sections.pages]]
+slug = "004-avere"
+title = "Avere: possession, auxiliary, idioms"
+description = "The present tense of avere, the silent h, passato-prossimo formation, and the avere + noun idioms (avere fame, avere ragione, ho vent'anni)."
+type = "weave"
+subtitle = "A1 reference · core verbs"
+
 # Planned future lessons:
 #   - genere e numero (gender and number of nouns)
-#   - essere vs. stare
 #   - presente regolare (-are / -ere / -ire)
-#   - presente di avere, andare, fare, dare, dire
+#   - presente di andare, fare, dare, dire
 #   - preposizioni semplici e articolate
 #   - parole interrogative (che, chi, dove, quando, perché, come, quanto)
 #   - numeri 1–100

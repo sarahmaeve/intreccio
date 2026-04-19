@@ -36,8 +36,8 @@
       "en": "eggs"
     },
     {
-      "it": "l'acqua calda diventa acqua bollente",
-      "fr": "l'eau chaude devient de l'eau bouillante",
+      "it": "l’acqua calda diventa acqua bollente",
+      "fr": "l’eau chaude devient de l’eau bouillante",
       "en": "hot water becomes boiling water"
     },
     {
@@ -47,7 +47,7 @@
     },
     {
       "it": "cioè cuocere piano",
-      "fr": "c'est-à-dire cuire doucement",
+      "fr": "c’est-à-dire cuire doucement",
       "en": "that is, to cook slowly"
     },
     {
@@ -81,13 +81,13 @@
       "en": "to sauté (slow, low-heat)"
     },
     {
-      "it": "nell'olio d'oliva",
-      "fr": "dans l'huile d'olive",
+      "it": "nell’olio d’oliva",
+      "fr": "dans l’huile d’olive",
       "en": "in olive oil"
     },
     {
       "it": "il soffritto",
-      "fr": "le soffritto (mélange sauté d'aromates)",
+      "fr": "le soffritto (mélange sauté d’aromates)",
       "en": "soffritto (sautéed aromatic base)"
     },
     {
@@ -207,12 +207,12 @@
     },
     {
       "it": "Aggiustare di sale",
-      "fr": "rectifier l'assaisonnement (sel)",
+      "fr": "rectifier l’assaisonnement (sel)",
       "en": "to adjust with salt"
     },
     {
       "it": "è la frase che appare",
-      "fr": "c'est la phrase qui apparaît",
+      "fr": "c’est la phrase qui apparaît",
       "en": "is the phrase that appears"
     },
     {
@@ -266,8 +266,8 @@
       "en": "to boil"
     },
     {
-      "it": "Bollire l'acqua",
-      "fr": "faire bouillir l'eau",
+      "it": "Bollire l’acqua",
+      "fr": "faire bouillir l’eau",
       "en": "boil the water"
     },
     {
@@ -309,6 +309,21 @@
       "it": "Servire subito",
       "fr": "servir aussitôt",
       "en": "serve immediately"
+    },
+    {
+      "it": "l'acqua calda diventa acqua bollente",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "nell'olio d'oliva",
+      "fr": "",
+      "en": ""
+    },
+    {
+      "it": "Bollire l'acqua",
+      "fr": "",
+      "en": ""
     }
   ]
 }

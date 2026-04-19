@@ -8,6 +8,7 @@
 :root {
     --color-fr: #1e3a8a;        /* Deep blue for French scaffolding. */
     --color-it: #14532d;        /* Deep green for Italian target. */
+    --color-es: #7c2d12;        /* Burgundy for Spanish — only in notes and glosses. */
     --weight-it: 600;
     --drill-hover: rgba(20, 83, 45, 0.12);
     --drill-playing: rgba(20, 83, 45, 0.24);
@@ -27,6 +28,15 @@ span[lang="it"] {
     color: var(--color-it);
     font-style: italic;
     font-weight: var(--weight-it);
+}
+
+/* Spanish appears only in metalinguistic notes and vocabulary glosses
+ * (DESIGN.md §3 — the weave is triglot, not quadriglot). The burgundy
+ * gives a reader a visual cue that a cross-linguistic comparison is
+ * coming from Spanish rather than French. */
+span[lang="es"] {
+    color: var(--color-es);
+    font-style: italic;
 }
 
 /* ── Drill affordance ──────────────────────────────────── */

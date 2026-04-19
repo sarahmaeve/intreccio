@@ -952,9 +952,16 @@ fn cmd_verify_language(args: &[String]) -> CmdResult {
         let mut total = 0;
         for chapter in &chapters {
             let dir = content_root.join(chapter);
-            let n = site_gen::typography::fix_files(&dir, &rules)?;
+            // Two passes: text-file rules (full line-by-line fixing of
+            // .md/.txt/.json) and HTML-aware rules (text nodes only
+            // inside .html, tags and attributes preserved verbatim).
+            let text_fixed = site_gen::typography::fix_files(&dir, &rules)?;
+            let html_fixed = site_gen::typography::fix_html_files(&dir, &rules)?;
+            let n = text_fixed + html_fixed;
             if n > 0 {
-                println!("{chapter}: fixed {n} file(s)");
+                println!(
+                    "{chapter}: fixed {n} file(s) ({text_fixed} text, {html_fixed} html)"
+                );
             }
             total += n;
         }

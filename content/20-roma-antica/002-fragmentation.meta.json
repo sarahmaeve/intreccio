@@ -13,10 +13,10 @@
   ],
   "cognate_patterns_showcased": [
     "fr -tion / it -zione",
-    "fr -té / it -tà (l'unità)",
+    "fr -té / it -tà (l’unità)",
     "fr -aire / it -ario",
     "fr -ée / it -ata (in past participles)"
   ],
   "prerequisites": ["001-roman-empire"],
-  "notes": "A2-B1 lesson — Italian share roughly 52% across both paragraphs. Includes dual-form Roman numerals: XV spelled out inside the Italian span, numeral in parens for the reader's eye, stripped by normalize_for_tts before synthesis."
+  "notes": "A2-B1 lesson — Italian share roughly 52% across both paragraphs. Includes dual-form Roman numerals: XV spelled out inside the Italian span, numeral in parens for the reader’s eye, stripped by normalize_for_tts before synthesis."
 }
