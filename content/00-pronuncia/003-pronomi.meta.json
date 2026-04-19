@@ -1,0 +1,31 @@
+{
+  "id": "003-pronomi",
+  "title": "I pronomi: suono, ritmo, cliticizzazione",
+  "level": "A1-reference",
+  "topic_area": "Italian pronunciation",
+  "pronunciation_features_introduced": [
+    "vowel quality in pronoun diphthongs: /ˈlu.i/, /ˈlɛ.i/, /ˈnɔ.i/, /ˈvɔ.i/",
+    "open /ɛ/ in lei and open /ɔ/ in noi / voi (reusing the vocali-lesson distinction)",
+    "clitic phonology: object pronouns bind to their verb host without pause",
+    "gli as /ʎi/ (same palatal lateral from the consonanti lesson, now in a pronoun role)",
+    "no stress on clitic object pronouns; stress always falls on the verb"
+  ],
+  "grammar_features_introduced": [
+    "Italian subject pronouns (io, tu, lui, lei, noi, voi, loro) as pro-drop default",
+    "direct-object pronouns (mi, ti, lo, la, ci, vi, li, le) with clitic position before the verb",
+    "indirect-object pronouns (mi, ti, gli, le, ci, vi, gli/loro) parallel in phonology, different in function",
+    "homograph trap: lo / la / le as both article and direct-object pronoun, disambiguated by what follows",
+    "contemporary use of gli for 3pl indirect object in place of formal loro",
+    "forward references to pronomi riflessivi and pronomi tonici (future grammar lesson)"
+  ],
+  "cognate_patterns_showcased": [
+    "Italian pro-drop vs. French/English obligatory subject pronoun",
+    "Italian clitic pronouns parallel French le/la/les (Francophone instinct transfers)",
+    "Italian gli/le ↔ French lui; Italian 3pl gli ↔ French leur (slight distribution difference)"
+  ],
+  "prerequisites": [
+    "001-vocali",
+    "002-consonanti"
+  ],
+  "notes": "Third A1 pronunciation lesson. Covers subject / DO / IO pronouns with individual drills for ≥3-char forms (lui, lei, noi, voi, loro, gli) and short-phrase drills for ≤2-char clitics (mi, ti, lo, la, ci, vi, li, le). The drill-constraint is explicitly mentioned to the reader as a pedagogically correct artifact of clitic phonology rather than a tool limitation. Reflexive and tonic pronouns are flagged for a future grammatica-base lesson."
+}
