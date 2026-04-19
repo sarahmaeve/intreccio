@@ -16,7 +16,7 @@
 //!    to the Google Cloud TTS API, and write the returned bytes.
 
 use std::collections::HashSet;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 use site_gen::config::ChapterConfig;
 
@@ -34,6 +34,45 @@ pub struct DrillReport {
     pub synthesized: usize,
     /// How many MP3s were already present on disk and reused.
     pub reused: usize,
+}
+
+/// One drill that still needs to be synthesized.
+#[derive(Debug, Clone)]
+pub struct DrillJob {
+    /// Lesson slug that first introduced this drill (first occurrence wins).
+    pub slug: String,
+    /// Canonical Italian text (post-`normalize_for_hash`), used for voice
+    /// selection and as the input to `normalize_for_tts`.
+    pub canonical: String,
+    /// BLAKE3-prefix filename stem (see [`drill_hash`]).
+    pub hash: String,
+    /// Absolute path where the MP3 will be written.
+    pub out_path: PathBuf,
+}
+
+/// The result of walking a chapter's lessons without any TTS I/O: everything
+/// needed to decide whether synthesis is worth doing, or to preview it.
+///
+/// This split lets callers run `drills --dry-run` without requiring a Google
+/// Cloud key — handy in CI, for cost estimation, and for sanity-checking a
+/// new lesson before committing to spend on TTS.
+#[derive(Debug, Default)]
+pub struct DrillPlan {
+    /// Total Italian spans encountered across all weave lessons.
+    pub spans_seen: usize,
+    /// Distinct drill-eligible spans after dedup by hash.
+    pub unique_drills: usize,
+    /// Drills whose MP3 is already on disk and will be reused as-is.
+    pub reused: usize,
+    /// Drills that need synthesis — the missing MP3s.
+    pub to_synthesize: Vec<DrillJob>,
+}
+
+impl DrillPlan {
+    /// How many MP3s are missing and would be synthesized by [`execute_plan`].
+    pub fn missing(&self) -> usize {
+        self.to_synthesize.len()
+    }
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -63,16 +102,19 @@ impl DrillError {
     }
 }
 
-/// Generate all missing drill MP3s for one chapter.
+/// Walk a chapter's weave lessons and enumerate the drills that would be
+/// synthesized, without touching the TTS API.
+///
+/// Used directly by `drills --dry-run` (no API key required) and indirectly
+/// by [`generate_drills`], which simply plans and then executes.
 ///
 /// `content_dir` is `content/<chapter>/` and `output_dir` is
-/// `site/chapters/<chapter>/` — the MP3s land in
-/// `<output_dir>/audio/drills/`.
-pub async fn generate_drills(
-    tts: &GoogleTts,
+/// `site/chapters/<chapter>/`. The `audio/drills/` subdirectory is created
+/// eagerly so the same directory layout holds whether we synthesize or not.
+pub fn plan_drills(
     content_dir: &Path,
     output_dir: &Path,
-) -> Result<DrillReport, DrillError> {
+) -> Result<DrillPlan, DrillError> {
     let config_path = content_dir.join("chapter.toml");
     let config_str = std::fs::read_to_string(&config_path)
         .map_err(|e| DrillError::io(&config_path, e))?;
@@ -83,7 +125,7 @@ pub async fn generate_drills(
     std::fs::create_dir_all(&drills_dir)
         .map_err(|e| DrillError::io(&drills_dir, e))?;
 
-    let mut report = DrillReport::default();
+    let mut plan = DrillPlan::default();
     let mut seen_hashes: HashSet<String> = HashSet::new();
 
     for section in &config.sections {
@@ -103,7 +145,7 @@ pub async fn generate_drills(
 
             let spans = weave::extract::extract_italian_spans(&html);
             for span in &spans {
-                report.spans_seen += 1;
+                plan.spans_seen += 1;
 
                 let canonical = weave::normalize_for_hash(&span.text);
                 if canonical.is_empty() {
@@ -120,22 +162,62 @@ pub async fn generate_drills(
                     // Already accounted for within this chapter run.
                     continue;
                 }
-                report.unique_drills += 1;
+                plan.unique_drills += 1;
 
                 let mp3_path = drills_dir.join(format!("{hash}.mp3"));
                 if mp3_path.exists() {
-                    report.reused += 1;
+                    plan.reused += 1;
                     continue;
                 }
 
-                synthesize_one(tts, &canonical, &mp3_path).await?;
-                report.synthesized += 1;
-                println!("  [{}] {hash}.mp3 — {}", page.slug, preview(&canonical, 60));
+                plan.to_synthesize.push(DrillJob {
+                    slug: page.slug.clone(),
+                    canonical,
+                    hash,
+                    out_path: mp3_path,
+                });
             }
         }
     }
 
-    Ok(report)
+    Ok(plan)
+}
+
+/// Synthesize every job in a plan. Returns the number of MP3s written.
+pub async fn execute_plan(
+    tts: &GoogleTts,
+    plan: &DrillPlan,
+) -> Result<usize, DrillError> {
+    for job in &plan.to_synthesize {
+        synthesize_one(tts, &job.canonical, &job.out_path).await?;
+        println!(
+            "  [{}] {}.mp3 — {}",
+            job.slug,
+            job.hash,
+            preview(&job.canonical, 60),
+        );
+    }
+    Ok(plan.to_synthesize.len())
+}
+
+/// Generate all missing drill MP3s for one chapter.
+///
+/// `content_dir` is `content/<chapter>/` and `output_dir` is
+/// `site/chapters/<chapter>/` — the MP3s land in
+/// `<output_dir>/audio/drills/`.
+pub async fn generate_drills(
+    tts: &GoogleTts,
+    content_dir: &Path,
+    output_dir: &Path,
+) -> Result<DrillReport, DrillError> {
+    let plan = plan_drills(content_dir, output_dir)?;
+    let synthesized = execute_plan(tts, &plan).await?;
+    Ok(DrillReport {
+        spans_seen: plan.spans_seen,
+        unique_drills: plan.unique_drills,
+        synthesized,
+        reused: plan.reused,
+    })
 }
 
 /// Compute a drill's MP3 filename stem (BLAKE3 first 16 hex chars).
@@ -176,7 +258,10 @@ async fn synthesize_one(
     Ok(())
 }
 
-fn preview(s: &str, max: usize) -> String {
+/// Truncate `s` to at most `max` Unicode scalar values, appending a single
+/// ellipsis if the string was shortened. Used for log lines that should not
+/// wrap the terminal when a drill's canonical text is long.
+pub fn preview(s: &str, max: usize) -> String {
     if s.chars().count() <= max {
         s.to_string()
     } else {
@@ -275,6 +360,105 @@ mod tests {
     fn preview_truncates_with_ellipsis() {
         assert_eq!(preview("short", 60), "short");
         assert_eq!(preview(&"x".repeat(100), 10), format!("{}…", "x".repeat(10)));
+    }
+
+    /// A fixture that stands up a minimal chapter on disk and returns its
+    /// (content_dir, output_dir) paths. Used by the plan_drills tests below
+    /// so each test owns an isolated tempdir.
+    fn make_fixture_chapter() -> (tempfile::TempDir, PathBuf, PathBuf) {
+        let dir = tempfile::tempdir().unwrap();
+        let content = dir.path().join("content").join("00-test");
+        let output = dir.path().join("site").join("chapters").join("00-test");
+        std::fs::create_dir_all(&content).unwrap();
+
+        std::fs::write(
+            content.join("chapter.toml"),
+            r#"[chapter]
+title = "Test chapter"
+
+[[sections]]
+heading = "Lessons"
+
+[[sections.pages]]
+slug = "001-intro"
+title = "Intro"
+description = "d"
+type = "weave"
+"#,
+        )
+        .unwrap();
+
+        // Two drillable Italian spans ("la storia", "la lingua"),
+        // plus a too-short one ("a") that should be filtered by
+        // MIN_DRILL_LENGTH, plus a duplicate to exercise dedup.
+        std::fs::write(
+            content.join("001-intro.html"),
+            r#"<p><span lang="it">la storia</span> è una cosa —
+               <span lang="it">la lingua</span> è un'altra.
+               <span lang="it">a</span> non si deve drillare.
+               <span lang="it">la storia</span> di nuovo.</p>"#,
+        )
+        .unwrap();
+
+        (dir, content, output)
+    }
+
+    #[test]
+    fn plan_drills_reports_unique_eligible_spans() {
+        let (_guard, content, output) = make_fixture_chapter();
+        let plan = plan_drills(&content, &output).unwrap();
+
+        // 4 spans total, but "a" is under MIN_DRILL_LENGTH and "la storia"
+        // appears twice, so only 2 unique drill jobs survive.
+        assert_eq!(plan.spans_seen, 4);
+        assert_eq!(plan.unique_drills, 2);
+        assert_eq!(plan.reused, 0);
+        assert_eq!(plan.missing(), 2);
+
+        let canonicals: Vec<&str> = plan
+            .to_synthesize
+            .iter()
+            .map(|j| j.canonical.as_str())
+            .collect();
+        assert!(canonicals.contains(&"la storia"));
+        assert!(canonicals.contains(&"la lingua"));
+    }
+
+    #[test]
+    fn plan_drills_counts_existing_mp3s_as_reused() {
+        let (_guard, content, output) = make_fixture_chapter();
+
+        // Pre-seed one of the two expected MP3s on disk so plan_drills
+        // classifies it as "reused" instead of "to_synthesize".
+        let drills_dir = output.join("audio").join("drills");
+        std::fs::create_dir_all(&drills_dir).unwrap();
+        let hash = drill_hash("la storia");
+        std::fs::write(drills_dir.join(format!("{hash}.mp3")), b"fake").unwrap();
+
+        let plan = plan_drills(&content, &output).unwrap();
+        assert_eq!(plan.unique_drills, 2);
+        assert_eq!(plan.reused, 1);
+        assert_eq!(plan.missing(), 1);
+        assert_eq!(plan.to_synthesize[0].canonical, "la lingua");
+    }
+
+    #[test]
+    fn plan_drills_creates_drills_dir_even_with_nothing_to_do() {
+        let (_guard, content, output) = make_fixture_chapter();
+        let drills_dir = output.join("audio").join("drills");
+        assert!(!drills_dir.exists());
+
+        plan_drills(&content, &output).unwrap();
+        assert!(drills_dir.is_dir(), "plan_drills should mkdir -p the drills dir");
+    }
+
+    #[test]
+    fn plan_drills_fails_loudly_on_missing_chapter_toml() {
+        let dir = tempfile::tempdir().unwrap();
+        let content = dir.path().join("nonexistent");
+        let output = dir.path().join("out");
+        let err = plan_drills(&content, &output).unwrap_err();
+        assert!(matches!(err, DrillError::Io { .. }));
     }
 
     #[test]

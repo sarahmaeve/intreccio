@@ -29,6 +29,12 @@ description = "Pronunciation of Italian subject, direct-object, and indirect-obj
 type = "weave"
 subtitle = "A1 reference · pronunciation of pronouns"
 
+[[sections.pages]]
+slug = "004-raddoppiamento"
+title = "Raddoppiamento sintattico fonologico"
+description = "Cross-word gemination after stressed monosyllables and final-accented polysyllables — the invisible Italian sandhi rule, framed against French liaison."
+type = "weave"
+subtitle = "A1 reference · cross-word sandhi"
+
 # Planned future lessons:
 #   - l'accento tonico (word stress)
-#   - raddoppiamento sintattico fonologico

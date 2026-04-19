@@ -1,0 +1,25 @@
+{
+  "id": "004-raddoppiamento",
+  "title": "Raddoppiamento sintattico fonologico",
+  "level": "A1-reference",
+  "topic_area": "Italian pronunciation",
+  "pronunciation_features_introduced": [
+    "raddoppiamento sintattico fonologico (RSF) as cross-word gemination",
+    "RSF Class 1: stressed monosyllables (a, e, è, ho, ha, tre, che, chi, più, già, su, fra, tra, me, te, sé)",
+    "RSF Class 2: polysyllables with orthographic final accent (città, caffè, perché, così, però, parlò, sarà)",
+    "contrast with non-triggering unstressed clitics (il, la, di, in, con, per, non)",
+    "gemination is invisible in spelling — an orthographic absence with phonological presence",
+    "perceptual parallel to French liaison: same binding instinct, different mechanism (segmental resurrection vs. length)",
+    "regional distribution: consistent in Tuscany / Rome / south, weaker / absent in the north"
+  ],
+  "grammar_features_introduced": [],
+  "cognate_patterns_showcased": [
+    "French liaison vs. Italian RSF as two varieties of cross-word sandhi",
+    "stressed-monosyllable triggering in Italian vs. register-graded liaison in French"
+  ],
+  "prerequisites": [
+    "001-vocali",
+    "002-consonanti"
+  ],
+  "notes": "Fourth A1 pronunciation lesson. Builds on doppie consonanti from 002-consonanti by displacing the gemination contrast across a word boundary. French liaison is used as the framing analogy since the target audience is B2-Francophone; the parallel is drawn explicitly with a comparison table, and the mechanism difference (liaison surfaces a latent segment; RSF lengthens an initial consonant) is called out. No drill-eligibility compromises: every Italian example is a ≥3-char phrase, so all examples drill cleanly. The regional caveat (north weakens or drops RSF) is stated explicitly to pre-empt learners who hear non-gemination in Milanese/Torinese speech."
+}

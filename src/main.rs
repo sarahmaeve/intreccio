@@ -251,10 +251,27 @@ fn cmd_build(args: &[String]) -> CmdResult {
 // ── drills ──────────────────────────────────────────────────────────────
 
 async fn cmd_drills(args: &[String]) -> CmdResult {
-    let chapter = args
-        .get(2)
-        .cloned()
-        .ok_or("drills requires a chapter name")?;
+    // Accept flags before or after the chapter name. Only one chapter
+    // argument is allowed; everything that starts with `--` is a flag.
+    let mut dry_run = false;
+    let mut chapter: Option<String> = None;
+    for arg in args.iter().skip(2) {
+        match arg.as_str() {
+            "--dry-run" => dry_run = true,
+            other if other.starts_with("--") => {
+                return Err(format!("unknown flag: {other}").into());
+            }
+            other => {
+                if chapter.is_some() {
+                    return Err(
+                        format!("unexpected extra argument: {other}").into(),
+                    );
+                }
+                chapter = Some(other.to_string());
+            }
+        }
+    }
+    let chapter = chapter.ok_or("drills requires a chapter name")?;
 
     let content_root = PathBuf::from("content");
     let content_dir = content_root.join(&chapter);
@@ -262,6 +279,27 @@ async fn cmd_drills(args: &[String]) -> CmdResult {
         return Err(format!("no such chapter: {}", content_dir.display()).into());
     }
     let output_dir = PathBuf::from("site").join("chapters").join(&chapter);
+
+    if dry_run {
+        println!("Planning drills for chapter: {chapter} (dry run — no TTS calls)");
+        let plan = drills::plan_drills(&content_dir, &output_dir)?;
+
+        for job in &plan.to_synthesize {
+            println!(
+                "  [would synth] [{}] {}.mp3 — {}",
+                job.slug,
+                job.hash,
+                drills::preview(&job.canonical, 60),
+            );
+        }
+
+        println!();
+        println!("  spans scanned:   {}", plan.spans_seen);
+        println!("  unique drills:   {}", plan.unique_drills);
+        println!("  reused existing: {}", plan.reused);
+        println!("  would synth:     {}", plan.missing());
+        return Ok(());
+    }
 
     let tts = GoogleTts::from_env()?;
 
