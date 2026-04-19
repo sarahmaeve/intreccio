@@ -1,0 +1,27 @@
+[chapter]
+title = "Pronuncia italiana"
+subtitle = "Italian pronunciation for English speakers with some French"
+level = "A1-reference"
+footer_text = "Intreccio"
+footer_suffix = "A1 reference"
+
+[[sections]]
+heading = "Lessons"
+
+[[sections.pages]]
+slug = "001-vocali"
+title = "Le cinque vocali"
+description = "The five Italian vowels: a, e, i, o, u, with example words and minimal pairs."
+type = "weave"
+subtitle = "A1 reference · pronunciation foundations"
+
+[[sections.pages]]
+slug = "002-consonanti"
+title = "Le consonanti trappola"
+description = "The Italian consonants that trip non-natives: r, gn, gl(i), sc(i), ch/gh, doppie, and s voicing."
+type = "weave"
+subtitle = "A1 reference · consonants and gemination"
+
+# Planned future lessons:
+#   - l'accento tonico (word stress)
+#   - raddoppiamento sintattico fonologico

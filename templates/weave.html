@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block main %}
+<article class="weave">
+{{ content | safe }}
+</article>
+{% endblock main %}
+
+{# drill.js loads from base.html so every page with data-audio spans — weave,
+   fragment (including the vocabolario page), capstones, recipes — gets the
+   click-to-hear behaviour automatically. #}

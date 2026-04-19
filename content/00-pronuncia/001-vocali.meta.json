@@ -1,0 +1,15 @@
+{
+  "id": "001-vocali",
+  "title": "Le cinque vocali",
+  "level": "A1-reference",
+  "topic_area": "Italian pronunciation",
+  "pronunciation_features_introduced": [
+    "the five Italian vowels (a, e, i, o, u)",
+    "pure vowel system (no reduction, no nasalization, no diphthongization)",
+    "open vs. closed e and o (mentioned, deferred as regional variation)"
+  ],
+  "grammar_features_introduced": [],
+  "cognate_patterns_showcased": [],
+  "prerequisites": [],
+  "notes": "First A1 pronunciation lesson, English-framed with occasional French contrasts. Every Italian example is a drillable span (≥3 chars); isolated vowels and two-letter words like 'sì' / 'tu' / 'no' are paired with short phrases so each example gets a drill MP3."
+}

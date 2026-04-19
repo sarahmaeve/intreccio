@@ -1,0 +1,23 @@
+{
+  "id": "005-cultura",
+  "title": "La tavola italiana",
+  "level": "B1",
+  "topic_area": "Italian cooking / food as culture",
+  "grammar_features_introduced": [
+    "congiuntivo presente in receptive contexts (che i negozi chiudano, penso che)",
+    "si impersonale (si mangia, si beve, si ordina, si chiama)",
+    "passato prossimo with avere in historical narrative (ha fondato, è diventato, si è accorciata)",
+    "complex temporal phrases: dalle 13 alle 16, dopo le 20",
+    "subordinated clauses with che, quando, in cui",
+    "comparative: più elaborato, più tardi",
+    "idiomatic stare a tavola as cultural-linguistic concept"
+  ],
+  "cognate_patterns_showcased": [
+    "fr -tion / it -zione (tradizione, struttura, generazione — multiple)",
+    "fr -ité / it -ità (identità, sostenibilità, giustizia)",
+    "fr -ant / it -ante (impegnativa, elaborato — adjective forms)",
+    "the si impersonale as Italian’s sole option where French has on"
+  ],
+  "prerequisites": ["001-ingredienti", "002-tecniche", "003-pasta-sughi", "004-regionale"],
+  "notes": "B1 level. First lesson with substantial receptive congiuntivo and broad si impersonale usage. Italian share climbs to ~60%+. Cultural content justifies extended Italian exposition where a drier topic would feel forced."
+}

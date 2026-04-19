@@ -1,0 +1,19 @@
+{
+  "id": "001-carbonara",
+  "title": "Spaghetti alla carbonara",
+  "level": "B1",
+  "topic_area": "Italian cooking / recipe",
+  "grammar_features_introduced": [
+    "Italian recipe-register infinitives (mettere, tagliare, versare, saltare)",
+    "gerund and participial phrases (aggiungendo, eliminando, lasciando)",
+    "impersonal si (si prepara, si emulsiona, si cuoce)",
+    "conditional imperative softening (servirà, ci vorranno)",
+    "quantifier precision typical of recipes (un cucchiaio di, mezzo centimetro, due minuti)"
+  ],
+  "cognate_patterns_showcased": [
+    "recipe-vocabulary pairs between French and Italian cooking traditions",
+    "cooking-verb etymological patterns (emulsionare / émulsionner)"
+  ],
+  "prerequisites": ["30-cucina-italiana/005-cultura"],
+  "notes": "Italian-only recipe page. No drill audio. Companion English page at 001-carbonara-en.html. Includes a link to the English translation at the top. The content is an authentic Roman carbonara — guanciale, pecorino romano, uova, pepe — with explicit notes against cream, bacon, onion, and garlic."
+}

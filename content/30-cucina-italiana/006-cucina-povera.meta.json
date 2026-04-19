@@ -1,0 +1,21 @@
+{
+  "id": "006-cucina-povera",
+  "title": "Cucina povera: la ricchezza della semplicità",
+  "level": "B1",
+  "topic_area": "Italian cooking / cultural reflection",
+  "grammar_features_introduced": [
+    "B1 full-Italian prose — no English or French scaffolding",
+    "passato prossimo and imperfetto in narrative contrast",
+    "congiuntivo imperfetto (avesse pianificato) — receptive",
+    "relative pronouns: che, ciò che, in cui, dietro la quale",
+    "complex participial constructions",
+    "idiomatic phrases: a chilometro zero, al massimo della loro dolcezza, stavano per essere buttati"
+  ],
+  "cognate_patterns_showcased": [
+    "fr -tion / it -zione (riutilizzazione, generazione, tradizione, standardizzazione)",
+    "fr -ité / it -ità (dolcezza, semplicità, autenticità, complessità)",
+    "fr -ance / it -anza (abbondanza)"
+  ],
+  "prerequisites": ["005-cultura"],
+  "notes": "B1 capstone, pure Italian. No drill audio by design (page type fragment). Content is roughly 450 words of flowing Italian prose on cucina povera, its history, its contemporary reinterpretation, and the ironies of its fashionable revival. Intended as first reading-only encounter with extended Italian at B1 register."
+}

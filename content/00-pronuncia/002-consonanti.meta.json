@@ -1,0 +1,20 @@
+{
+  "id": "002-consonanti",
+  "title": "Le consonanti trappola",
+  "level": "A1-reference",
+  "topic_area": "Italian pronunciation",
+  "pronunciation_features_introduced": [
+    "tapped r (not English retroflex or French uvular)",
+    "palatal nasal /ɲ/ written gn",
+    "palatal lateral /ʎ/ written gl(i)",
+    "postalveolar fricative /ʃ/ written sc(e) / sc(i)",
+    "hard /k/ and /ɡ/ before e/i via ch and gh spelling",
+    "doppie consonanti (geminate length distinction) with meaning-changing minimal pairs",
+    "intervocalic s voicing to /z/",
+    "s voicing before voiced consonants"
+  ],
+  "grammar_features_introduced": [],
+  "cognate_patterns_showcased": [],
+  "prerequisites": ["001-vocali"],
+  "notes": "Second A1 pronunciation lesson. Builds on 001-vocali. Every Italian example is ≥3 chars so all examples are drill-eligible. Doppie consonanti section uses minimal pairs to demonstrate meaning-changing gemination."
+}

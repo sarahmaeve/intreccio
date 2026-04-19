@@ -1,0 +1,21 @@
+{
+  "id": "003-pasta-sughi",
+  "title": "La pasta e i suoi sughi",
+  "level": "A2-B1",
+  "topic_area": "Italian cooking / pasta and sauces",
+  "grammar_features_introduced": [
+    "conjugated Italian present tense (è, ha, aderiscono, cuoce, usa)",
+    "receptive passato prossimo with essere (è cotta, è diffuso)",
+    "comparative constructions: la più semplice, un minuto prima",
+    "Italian relative pronouns (che, a cui) in context",
+    "quantifier phrases: più di trecento, un mestolo di, una resistenza",
+    "contrast between transitive and intransitive cooking verbs (cuocere vs cucinare)"
+  ],
+  "cognate_patterns_showcased": [
+    "fr -ence / it -enza (résistance / resistenza — via the French gloss)",
+    "fr -tion / it -zione (cuisson / cottura — noun pair; cottura itself is -tura not -zione, flagged as non-pattern)",
+    "fr -ée / it -ata (cotta, una distinzione)"
+  ],
+  "prerequisites": ["001-ingredienti", "002-tecniche"],
+  "notes": "First A2-B1 lesson in the cooking chapter. Italian share rises substantially — now carrying grammatical weight, not just content nouns. French does the heavy lifting of quantifiers and connective tissue. English recedes to clarifying glosses."
+}

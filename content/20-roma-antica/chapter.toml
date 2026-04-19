@@ -1,0 +1,23 @@
+[chapter]
+title = "Roma antica"
+subtitle = "Founding, daily life, and the arc from Rome to unified Italy"
+level = "A1-A2"
+footer_text = "Intreccio"
+footer_suffix = "A1 → A2-B1"
+
+[[sections]]
+heading = "Lessons"
+
+[[sections.pages]]
+slug = "001-roman-empire"
+title = "The Roman Empire"
+description = "Founding of Rome, daily life in the Empire, and the fall of the West."
+type = "weave"
+subtitle = "Paragraphs 1–2 · ramping A1 → A2"
+
+[[sections.pages]]
+slug = "002-fragmentation"
+title = "From fragmentation to unification"
+description = "Medieval fragmentation, the Renaissance in Firenze, and the Risorgimento."
+type = "weave"
+subtitle = "Paragraphs 3–4 · A2-B1"

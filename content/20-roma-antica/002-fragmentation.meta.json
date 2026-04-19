@@ -1,0 +1,22 @@
+{
+  "id": "002-fragmentation",
+  "title": "From fragmentation to unification",
+  "level": "A2-B1",
+  "topic_area": "Italian history",
+  "notes_on_calibration": "This lesson is ported from examples/roman-empire-triglot.md and its actual shares (fr-heavy) are outside the A2-B1 range. It will need a revision pass before being shipped as A2-B1 content — the French scaffolding needs to shrink and the Italian content to grow. Kept as-is for now to exercise the audit-shares tool.",
+  "grammar_features_introduced": [
+    "passato prossimo with both essere and avere (è entrata, hanno finanziato)",
+    "imperfetto in background descriptions (era divisa, faceva)",
+    "past-participle agreement with essere (è rimasta, è diventata)",
+    "receptive congiuntivo presente (entrino, diventi) after perché/pour que",
+    "dual-form Roman-numeral ordinals (il quindicesimo (XV) secolo)"
+  ],
+  "cognate_patterns_showcased": [
+    "fr -tion / it -zione",
+    "fr -té / it -tà (l'unità)",
+    "fr -aire / it -ario",
+    "fr -ée / it -ata (in past participles)"
+  ],
+  "prerequisites": ["001-roman-empire"],
+  "notes": "A2-B1 lesson — Italian share roughly 52% across both paragraphs. Includes dual-form Roman numerals: XV spelled out inside the Italian span, numeral in parens for the reader's eye, stripped by normalize_for_tts before synthesis."
+}

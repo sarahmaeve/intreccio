@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ site.title | safe }} — {{ site.subtitle | safe }}</title>
+    <meta name="description" content="{{ site.description | safe }}">
+    <meta property="og:title" content="{{ site.title | safe }}">
+    <meta property="og:description" content="{{ site.description | safe }}">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_US">
+    {% if site.canonical_url %}<link rel="canonical" href="{{ site.canonical_url | safe }}">{% endif %}
+    <link rel="stylesheet" href="shared/chapter.css">
+    <link rel="stylesheet" href="shared/weave.css">
+</head>
+<body>
+    <header class="site-header">
+        <h1>{{ site.title | safe }}</h1>
+        <p class="tagline">{{ site.tagline | safe }}</p>
+    </header>
+
+    <main>
+        <p class="intro">{{ site.intro | safe }}</p>
+
+        {% for level in levels %}
+        <section class="level">
+            <h2>{{ level.heading | safe }}</h2>
+            <ul class="chapter-list">
+                {% for chapter in level.chapters %}
+                <li{% if chapter.flag %} class="flag-hidden" data-flag="{{ chapter.flag }}"{% endif %}>
+                    <a href="chapters/{{ chapter.slug }}/index.html"
+                       {% if chapter.new %}class="new"{% endif %}>
+                        {{ chapter.title | safe }}
+                    </a>
+                    <p>{{ chapter.description | safe }}</p>
+                    {% if chapter.meta %}<p class="meta">{{ chapter.meta | safe }}</p>{% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+        {% endfor %}
+    </main>
+
+    <footer>
+        <p>{{ site.footer | safe }}</p>
+    </footer>
+</body>
+</html>

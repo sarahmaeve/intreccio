@@ -1,0 +1,20 @@
+{
+  "id": "002-tecniche",
+  "title": "Le tecniche di cottura",
+  "level": "A2",
+  "topic_area": "Italian cooking / techniques",
+  "grammar_features_introduced": [
+    "Italian verb infinitives across the three conjugation classes (-are, -ere, -ire)",
+    "infinitive as imperative in recipe-writing register (bollire, soffriggere, aggiungere)",
+    "prepositional verbs: cuocere al forno / al vapore / in padella",
+    "fixed phrases: aggiustare di sale, a fuoco lento, a dadini, a fette",
+    "nominalization: mantecare → la mantecatura (not introduced; mentioned as next step)"
+  ],
+  "cognate_patterns_showcased": [
+    "fr -ir / it -ire (bouillir / bollire)",
+    "fr -er / it -are (couper / tagliare — not direct but shape-cognate)",
+    "French infinitive → Italian infinitive stem-guessing heuristic"
+  ],
+  "prerequisites": ["001-ingredienti"],
+  "notes": "Second cooking lesson, still A2. Introduces a compact verb vocabulary and the three conjugation classes — infinitives only, no person/tense inflection yet. Lots of recipe-register idiom (aggiustare di sale, cuocere a fuoco lento)."
+}

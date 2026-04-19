@@ -1,0 +1,23 @@
+[chapter]
+title = "Ricette tradizionali"
+subtitle = "Italian recipes authored entirely in Italian, with English translations on companion pages."
+level = "B1"
+footer_text = "Intreccio"
+footer_suffix = "Ricette — Italian only"
+
+[[sections]]
+heading = "Pasta"
+
+[[sections.pages]]
+slug = "001-carbonara"
+title = "Spaghetti alla carbonara"
+description = "The authentic Roman recipe: four ingredients, one technique, zero compromises. Recipe in Italian only; English translation on a linked page."
+type = "fragment"
+subtitle = "Ricetta in italiano"
+
+[[sections.pages]]
+slug = "001-carbonara-en"
+title = "Spaghetti alla Carbonara — English translation"
+description = "English translation of the carbonara recipe. Use the Italian version as your cooking reference when you can."
+type = "fragment"
+subtitle = "English companion page"

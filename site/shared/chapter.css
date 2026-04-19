@@ -1,0 +1,309 @@
+/* Intreccio — baseline page styles.
+ *
+ * A deliberately modest stylesheet: narrow measure, serif body, generous
+ * line-height so the triglot reads like a book rather than a webpage.
+ * The triglot colouring (French blue, Italian green) lives in weave.css. */
+
+:root {
+    --text: #1f2937;
+    --text-muted: #6b7280;
+    --text-subtle: #9ca3af;
+    --bg: #fafaf9;
+    --accent: #14532d;
+    --accent-soft: #d1fae5;
+    --border: #e5e7eb;
+    --max-width: 42em;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    margin: 0;
+    padding: 2rem 1rem 4rem;
+}
+
+body > * {
+    max-width: var(--max-width);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+a {
+    color: var(--accent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+}
+
+a:hover { text-decoration-thickness: 2px; }
+
+/* ── Navigation ─────────────────────────────────────────── */
+
+.breadcrumb {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+}
+
+.breadcrumb a { color: var(--accent); text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb span[aria-hidden] { color: var(--text-subtle); margin: 0 0.4em; }
+
+/* ── Headings ──────────────────────────────────────────── */
+
+header h1 {
+    font-size: 1.875rem;
+    line-height: 1.2;
+    margin: 0 0 0.25rem;
+    color: var(--text);
+}
+
+.subtitle,
+.tagline {
+    color: var(--text-muted);
+    font-style: italic;
+    margin: 0 0 2rem;
+}
+
+main { margin-top: 2rem; }
+
+main > :first-child { margin-top: 0; }
+
+main p { margin: 0 0 1.25em; }
+
+h2 {
+    font-size: 1.375rem;
+    margin: 2em 0 0.75em;
+    color: var(--accent);
+    font-weight: 700;
+}
+
+h3 {
+    font-size: 1.125rem;
+    margin: 1.5em 0 0.5em;
+    color: var(--text);
+    font-weight: 600;
+}
+
+/* ── Site landing page ─────────────────────────────────── */
+
+.site-header h1 {
+    font-size: 2.5rem;
+    color: var(--accent);
+    margin-bottom: 0.25rem;
+}
+
+.intro {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--text);
+    margin-bottom: 2.5rem;
+}
+
+.level h2 {
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 0.25rem;
+}
+
+/* ── Chapter and lesson lists ──────────────────────────── */
+
+.lesson-list,
+.chapter-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem;
+}
+
+.lesson-list li,
+.chapter-list li {
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.lesson-list li:last-child,
+.chapter-list li:last-child {
+    border-bottom: none;
+}
+
+.lesson-list li p,
+.chapter-list li p {
+    margin: 0.25rem 0 0;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.lesson-list a,
+.chapter-list a {
+    font-weight: 600;
+    font-size: 1.0625rem;
+    text-decoration: none;
+}
+
+.lesson-list a:hover,
+.chapter-list a:hover { text-decoration: underline; }
+
+.chapter-list .meta,
+.lesson-list .meta {
+    font-size: 0.8125rem;
+    color: var(--text-subtle);
+    margin-top: 0.25rem;
+}
+
+.chapter-list a.new::after {
+    content: " · NEW";
+    font-size: 0.75rem;
+    color: #059669;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.empty {
+    color: var(--text-subtle);
+    font-style: italic;
+}
+
+/* ── Footer ────────────────────────────────────────────── */
+
+footer {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+footer a { color: var(--text-muted); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+
+.level-badge {
+    font-variant: small-caps;
+    letter-spacing: 0.05em;
+    font-size: 0.8125rem;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 0.125rem 0.5rem;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+
+/* ── Miscellaneous ─────────────────────────────────────── */
+
+.butter-bar {
+    background: #fef3c7;
+    color: #78350f;
+    padding: 0.5rem 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+}
+
+.flag-hidden { display: none; }
+
+code {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: #f1f5f9;
+    padding: 0.15em 0.35em;
+    border-radius: 3px;
+    font-size: 0.9em;
+}
+
+/* ── Vocabolario page ──────────────────────────────────────────── */
+
+.vocab-intro {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+}
+
+.vocab-toc {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.75rem 1.25rem;
+    margin: 0 0 2.5rem;
+    font-size: 0.9375rem;
+}
+
+.vocab-toc ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.vocab-toc li {
+    padding: 0.2rem 0;
+    border: none;
+}
+
+.vocab-toc a {
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.vocab-toc a:hover { text-decoration: underline; }
+
+.vocab-count {
+    font-size: 0.8125rem;
+    color: var(--text-subtle);
+    font-weight: normal;
+}
+
+.vocab-group {
+    margin-top: 2.5rem;
+}
+
+.vocab-group h3 {
+    color: var(--accent);
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 0.25rem;
+}
+
+.vocab-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.75rem;
+    font-size: 0.9375rem;
+}
+
+.vocab-table th,
+.vocab-table td {
+    text-align: left;
+    padding: 0.4rem 0.5rem;
+    vertical-align: top;
+    border-bottom: 1px solid var(--border);
+}
+
+.vocab-table th {
+    font-weight: 600;
+    color: var(--text-muted);
+    font-size: 0.8125rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--border);
+}
+
+.vocab-table td.vocab-it  { width: 35%; }
+.vocab-table td.vocab-fr  { width: 30%; }
+.vocab-table td.vocab-en  { width: 35%; }
+
+.vocab-empty {
+    color: var(--text-subtle);
+    font-style: italic;
+}
+
+/* Ensure narrow measure on large screens, wider measure on small. */
+@media (max-width: 640px) {
+    body { padding: 1rem 0.75rem 3rem; }
+    header h1 { font-size: 1.5rem; }
+    .site-header h1 { font-size: 2rem; }
+    .intro { font-size: 1rem; }
+}

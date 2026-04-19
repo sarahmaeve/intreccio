@@ -1,0 +1,23 @@
+{
+  "id": "007-dop-igp",
+  "title": "I prodotti DOP e IGP",
+  "level": "B2",
+  "topic_area": "Italian cooking / food law and cultural identity",
+  "grammar_features_introduced": [
+    "B2 full-Italian prose — argumentative and analytical register",
+    "congiuntivo imperfetto productively (purché si rispettino, mangiavano, seguono)",
+    "complex subordination with chiunque + congiuntivo",
+    "passato remoto receptive (non present, but flagged for future encounter)",
+    "gerund constructions (bloccarle, tracciata)",
+    "connective adverbs of a formal register: dunque, malgrado, per quanto, inoltre",
+    "specialized legal-technical vocabulary: disciplinare, filiera, fregiarsi, tutela"
+  ],
+  "cognate_patterns_showcased": [
+    "fr -tion / it -zione (denominazione, lavorazione, registrazione, globalizzazione, certificazione, distribuzione)",
+    "fr -té / it -tà (autenticità, specialità, qualità, varietà)",
+    "fr -aire / it -ario (commerciale — adjective form)",
+    "highly specialized vocabulary from EU food-law register"
+  ],
+  "prerequisites": ["006-cucina-povera"],
+  "notes": "B2 challenge lesson, pure Italian, no audio. Longer and more complex than the B1 capstone — argumentative structure, formal register, specialized legal and economic vocabulary, abstract reasoning. Intended to stretch the reader to genuinely advanced Italian prose."
+}

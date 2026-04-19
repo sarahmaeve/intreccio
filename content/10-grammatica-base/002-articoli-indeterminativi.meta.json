@@ -1,0 +1,20 @@
+{
+  "id": "002-articoli-indeterminativi",
+  "title": "Gli articoli indeterminativi",
+  "level": "A1-reference",
+  "topic_area": "Italian grammar",
+  "grammar_features_introduced": [
+    "the four indefinite article forms: un, uno, una, un'",
+    "masculine un before consonants AND vowels (no apostrophe)",
+    "uno before s+cons, z, gn, ps, pn (rescue rule mirroring definite lo)",
+    "feminine una before consonants, un' (with apostrophe) before vowels",
+    "the masculine/feminine asymmetry before vowels: un vs un'",
+    "absence of plural indefinite article; partitive dei/degli/delle as substitute"
+  ],
+  "pronunciation_features_introduced": [
+    "un + vowel: n flows phonologically into the vowel without apostrophe"
+  ],
+  "cognate_patterns_showcased": [],
+  "prerequisites": ["001-articoli-determinativi"],
+  "notes": "Second A1 grammar lesson; builds directly on 001-articoli-determinativi. The central pedagogical point is the masculine un / feminine un' asymmetry before vowels. Notes for French speakers highlight the orthographic difference despite similar phonology."
+}

@@ -1,0 +1,34 @@
+[chapter]
+title = "Grammatica di base"
+subtitle = "A1 Italian grammar, English-framed"
+level = "A1-reference"
+footer_text = "Intreccio"
+footer_suffix = "A1 reference"
+
+[[sections]]
+heading = "Lessons"
+
+[[sections.pages]]
+slug = "001-articoli-determinativi"
+title = "Gli articoli determinativi"
+description = "The seven definite article forms: il, lo, l', i, gli, la, le."
+type = "weave"
+subtitle = "A1 reference · grammar foundations"
+
+[[sections.pages]]
+slug = "002-articoli-indeterminativi"
+title = "Gli articoli indeterminativi"
+description = "The four indefinite article forms: un, uno, una, un' — and the masculine/feminine asymmetry before vowels."
+type = "weave"
+subtitle = "A1 reference · grammar foundations"
+
+# Planned future lessons:
+#   - genere e numero (gender and number of nouns)
+#   - essere vs. stare
+#   - presente regolare (-are / -ere / -ire)
+#   - presente di avere, andare, fare, dare, dire
+#   - preposizioni semplici e articolate
+#   - parole interrogative (che, chi, dove, quando, perché, come, quanto)
+#   - numeri 1–100
+#   - negazione
+#   - saluti e formule di cortesia

@@ -1,0 +1,33 @@
+# Cloudflare Pages / Netlify headers file.
+#
+# Intreccio runs under a strict CSP. Every JS and CSS file must be
+# served from the same origin; no inline styles, no inline scripts,
+# no external resources. The `cargo run -- check-csp` command
+# enforces these rules on the generated HTML before deploy.
+
+# ── Security headers (all pages) ────────────────────────────────────
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
+  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; media-src 'self'; img-src 'self'; font-src 'self'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'
+
+# ── Cache rules ─────────────────────────────────────────────────────
+
+# Drill MP3s are content-addressed by BLAKE3 — immutable by construction.
+/chapters/*/audio/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Shared JS/CSS changes rarely; cache for a week.
+/shared/*
+  Cache-Control: public, max-age=604800
+
+# HTML pages may update on every build — short cache with revalidation.
+/*.html
+/chapters/*/*.html
+  Cache-Control: public, max-age=3600, must-revalidate
+
+# Images (once added) are stripped and immutable.
+/chapters/*/images/*
+  Cache-Control: public, max-age=31536000, immutable

@@ -1,0 +1,21 @@
+{
+  "id": "004-regionale",
+  "title": "La cucina regionale",
+  "level": "A2-B1",
+  "topic_area": "Italian cooking / regional variation",
+  "grammar_features_introduced": [
+    "passato prossimo with essere in narrative mode (è arrivato, hanno lasciato)",
+    "imperfetto in background description (era caro)",
+    "comparative clauses: si mangia meglio che",
+    "preposition pattern: alla + feminine region/city name (alla milanese, alla fiorentina)",
+    "complex noun phrases with multiple prepositional modifiers"
+  ],
+  "cognate_patterns_showcased": [
+    "fr -ée / it -ata (adjective-participles)",
+    "fr -té / it -tà (identità / identité — visible in French gloss)",
+    "fr -ion / it -ione (tradizioni, regioni, influenze — multiple instances)",
+    "prepositional regional pattern: alla + toponym-adjective"
+  ],
+  "prerequisites": ["003-pasta-sughi"],
+  "notes": "A2-B1. Introduces the alla + regional-adjective pattern that structures much of Italian menu naming. French carries more weight here than in earlier lessons because the content is comparative (North vs South, historical influences)."
+}

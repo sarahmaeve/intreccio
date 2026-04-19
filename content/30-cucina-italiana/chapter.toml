@@ -1,0 +1,77 @@
+[chapter]
+title = "La cucina italiana"
+subtitle = "From ingredients to culture — a triglot tour of Italian food, A2 → B1, with a B1 capstone and a B2 challenge."
+level = "A2-B1"
+footer_text = "Intreccio"
+footer_suffix = "A2 → B2"
+
+[[sections]]
+heading = "A2 — Foundations"
+
+[[sections.pages]]
+slug = "001-ingredienti"
+title = "Gli ingredienti della dispensa"
+description = "The Italian pantry: olive oil, tomatoes, cheese, cured meats, herbs."
+type = "weave"
+subtitle = "A2 · ingredients and kitchen vocabulary"
+
+[[sections.pages]]
+slug = "002-tecniche"
+title = "Le tecniche di cottura"
+description = "Cooking as a handful of verbs: bollire, soffriggere, arrostire, grattugiare."
+type = "weave"
+subtitle = "A2 · techniques as infinitives"
+
+[[sections]]
+heading = "A2 → B1 — Ramping up"
+
+[[sections.pages]]
+slug = "003-pasta-sughi"
+title = "La pasta e i suoi sughi"
+description = "Pasta shapes and the sauces they belong with; the Italian logic of pairing."
+type = "weave"
+subtitle = "A2-B1 · pasta typology and pairings"
+
+[[sections.pages]]
+slug = "004-regionale"
+title = "La cucina regionale"
+description = "Nord, Centro, Sud: why Italian cuisine is really twenty cuisines."
+type = "weave"
+subtitle = "A2-B1 · regional variation"
+
+[[sections]]
+heading = "B1 — Culture"
+
+[[sections.pages]]
+slug = "005-cultura"
+title = "La tavola italiana"
+description = "Food as culture: the Sunday meal, pranzo vs cena, the slow-food movement."
+type = "weave"
+subtitle = "B1 · food as cultural practice"
+
+[[sections]]
+heading = "Capstones — Pure Italian, no audio"
+
+[[sections.pages]]
+slug = "006-cucina-povera"
+title = "Cucina povera: la ricchezza della semplicità"
+description = "A B1 reading in Italian only, on peasant cooking and why it still matters. No drill audio."
+type = "fragment"
+subtitle = "B1 capstone · reading-only, pure Italian"
+
+[[sections.pages]]
+slug = "007-dop-igp"
+title = "I prodotti DOP e IGP"
+description = "A B2 challenge reading in Italian only, on protected designations of origin and their cultural-economic meaning. No drill audio."
+type = "fragment"
+subtitle = "B2 challenge · reading-only, pure Italian"
+
+[[sections]]
+heading = "Reference"
+
+[[sections.pages]]
+slug = "vocabolario"
+title = "Vocabolario della cucina"
+description = "Italian culinary vocabulary aggregated across all cooking lessons, with French and English glosses and drill audio."
+type = "fragment"
+subtitle = "Reference · aggregated vocabulary"

@@ -1,0 +1,19 @@
+{
+  "id": "001-roman-empire",
+  "title": "The Roman Empire",
+  "level": "A1",
+  "topic_area": "Italian history",
+  "grammar_features_introduced": [
+    "Italian definite articles (gender seeding via il / la / l')",
+    "Italian noun-phrase reading",
+    "fixed Italian phrases (tutte le strade portano a Roma)",
+    "no conjugated Italian verbs yet"
+  ],
+  "cognate_patterns_showcased": [
+    "fr -oire / it -oria",
+    "fr -ion / it -ione",
+    "fr -té / it -tà (deferred; appears in lesson 002)"
+  ],
+  "prerequisites": [],
+  "notes": "First lesson; ramping from ~15% Italian in paragraph 1 to ~30% in paragraph 2. Introduces Italian primarily as nouns with articles, so the learner starts internalizing gender."
+}

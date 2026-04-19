@@ -1,0 +1,49 @@
+[site]
+title = "Intreccio"
+subtitle = "Triglot Italian for French-literate readers"
+tagline = "Learn Italian through English framing and French bridging."
+description = "Triglot reading material for English readers with strong French: Italian entering at A2 with the goal of comfortable B1 reading. Every Italian word and phrase is click-to-hear."
+canonical_url = "https://intreccio.pages.dev/index.html"
+intro = "Reading lessons for English speakers who already read French well, building Italian comprehension from A2 toward B1. Italian words and phrases have click-to-hear audio; French connects the grammar; English catches you when both fail."
+footer = "Intreccio — triglot Italian reading"
+
+[[levels]]
+heading = "A1 — Foundations (reference)"
+
+[[levels.chapters]]
+slug = "00-pronuncia"
+title = "Pronuncia italiana"
+description = "Italian pronunciation for English speakers: vowels, consonants, stress, and sandhi."
+meta = "2 lessons · A1 reference · English-framed"
+
+[[levels.chapters]]
+slug = "10-grammatica-base"
+title = "Grammatica di base"
+description = "A1 grammar: articoli, genere, present tense, salutations and courtesy formulas."
+meta = "2 lessons · A1 reference · English-framed"
+
+[[levels]]
+heading = "A1 → A2 — Weave lessons"
+
+[[levels.chapters]]
+slug = "20-roma-antica"
+title = "Roma antica"
+description = "Founding of Rome, daily life in the Empire, medieval fragmentation, and the Risorgimento."
+meta = "2 lessons · A1 → A2-B1"
+
+[[levels]]
+heading = "A2 → B2 — La cucina italiana"
+
+[[levels.chapters]]
+slug = "30-cucina-italiana"
+title = "La cucina italiana"
+description = "A seven-lesson tour of Italian food: ingredients, techniques, pasta, regional variation, culture, plus a B1 capstone and a B2 challenge, both in pure Italian."
+meta = "7 lessons + vocabolario · A2 → B2"
+new = true
+
+[[levels.chapters]]
+slug = "36-ricette-tradizionali"
+title = "Ricette tradizionali"
+description = "Authentic Italian recipes written in Italian, with English translations on companion pages. Spaghetti alla carbonara, as the Romans make it."
+meta = "1 recipe · Italian + English translation"
+new = true

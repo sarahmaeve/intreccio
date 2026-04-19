@@ -1,0 +1,19 @@
+{
+  "id": "001-ingredienti",
+  "title": "Gli ingredienti della dispensa",
+  "level": "A2",
+  "topic_area": "Italian cooking / ingredients",
+  "grammar_features_introduced": [
+    "Italian definite articles in running prose (il, la, l', i, gli, le)",
+    "Italian nouns with gender exposed by article agreement",
+    "fixed phrases: la passata, i pelati, il concentrato, il soffritto"
+  ],
+  "cognate_patterns_showcased": [
+    "fr -age / it -aggio (fromage / formaggio — implicit)",
+    "fr -cie / it -cia (la pancia)",
+    "fr -é / it -e (qualité / qualità was A1 but qualità appears here too)",
+    "concrete body-part etymology of cured-meat names: guanciale ← guancia, pancetta ← pancia"
+  ],
+  "prerequisites": ["10-grammatica-base/001-articoli-determinativi"],
+  "notes": "First cooking lesson, A2 target calibration. Italian is dense in nouns (ingredients, cheeses, cured meats) with French bridging the grammar and connective tissue. Emphasis is on expanding noun vocabulary with gender already implicit in the article. No conjugated verbs beyond fixed phrases."
+}

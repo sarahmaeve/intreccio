@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+#
+# intreccio pre-commit hook.
+#
+# Runs `cargo test` and `cargo clippy` on any commit that touches Rust
+# source or Cargo metadata. Docs-only or content-only commits skip
+# both, keeping the hook out of the way for lesson-authoring work.
+#
+# Install once per clone:
+#
+#     git config core.hooksPath scripts/hooks
+#
+# That single command tells git to look here for hooks instead of
+# .git/hooks/, so this file (which lives in the repo) is the
+# authoritative hook.
+#
+# To bypass — only when you know exactly why — use:
+#
+#     git commit --no-verify
+
+set -euo pipefail
+
+repo_root="$(git rev-parse --show-toplevel)"
+cd "$repo_root"
+
+# Skip the hook when no Rust-relevant files are staged. We still run
+# for Cargo.lock changes (dependency updates affect the whole build)
+# but not for lesson HTML, meta.json, vocab.json, or audio files.
+staged="$(git diff --cached --name-only --diff-filter=ACMR)"
+if ! grep -qE '\.rs$|^Cargo\.(toml|lock)$|^scripts/hooks/' <<< "$staged"; then
+    exit 0
+fi
+
+echo "pre-commit: cargo test --workspace"
+cargo test --workspace --quiet
+
+echo "pre-commit: cargo clippy --workspace --all-targets -- -D warnings"
+cargo clippy --workspace --all-targets --quiet -- -D warnings
+
+echo "pre-commit: OK"

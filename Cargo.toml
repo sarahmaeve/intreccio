@@ -1,0 +1,50 @@
+[package]
+name = "intreccio"
+version = "0.1.0"
+edition = "2021"
+description = "Triglot Italian — build tool for weave-style language learning content"
+
+[workspace]
+members = [".", "crates/site-gen", "crates/image-strip", "crates/weave"]
+resolver = "2"
+
+[dependencies]
+site-gen = { path = "crates/site-gen" }
+image-strip = { path = "crates/image-strip" }
+weave = { path = "crates/weave" }
+
+# Async runtime + HTTP client for Google Cloud Text-to-Speech.
+tokio = { version = "1", features = ["full"] }
+reqwest = { version = "0.12", features = ["json"] }
+
+# Serialization.
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+toml = "0.8"
+
+# Error handling.
+thiserror = "2"
+
+# Hashing for content-addressed drill MP3 filenames.
+blake3 = "1"
+
+# Pin a transitive dep that `blake3` pulls in. `constant_time_eq` 0.4.3
+# bumped its MSRV to rustc 1.95, which was released too recently to treat
+# as a build prerequisite. This pin keeps us on 0.4.2 regardless of what
+# `cargo update` is told to do. Revisit when 1.95 is unambiguously old,
+# or when we swap to a hash (e.g. sha2) whose dependency tree isn't
+# chasing the bleeding edge.
+constant_time_eq = "=0.4.2"
+
+# Tera templates (shared with site-gen, declared here for direct use too).
+tera = "1"
+
+# Base64-decoding the TTS API response.
+base64 = "0.22"
+
+# Local static-file dev server.
+tiny_http = "0.12"
+mime_guess = "2"
+
+[dev-dependencies]
+tempfile = "3"

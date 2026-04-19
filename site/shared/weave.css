@@ -1,0 +1,74 @@
+/* Intreccio — triglot language styling and drill affordance.
+ *
+ * French spans are blue italic; Italian spans are green bold italic.
+ * Italian spans with drill audio (data-audio) gain a click affordance
+ * (cursor + focus ring + playing state) without cluttering the prose
+ * with inline buttons. */
+
+:root {
+    --color-fr: #1e3a8a;        /* Deep blue for French scaffolding. */
+    --color-it: #14532d;        /* Deep green for Italian target. */
+    --weight-it: 600;
+    --drill-hover: rgba(20, 83, 45, 0.12);
+    --drill-playing: rgba(20, 83, 45, 0.24);
+}
+
+/* Foreign-language styling applies only to inline <span> markers, not
+ * to whole-article language declarations — so a pure-Italian capstone
+ * or recipe page wrapped in <article lang="it">…</article> renders as
+ * normal prose rather than an unreadable wall of green-bold-italic. */
+
+span[lang="fr"] {
+    color: var(--color-fr);
+    font-style: italic;
+}
+
+span[lang="it"] {
+    color: var(--color-it);
+    font-style: italic;
+    font-weight: var(--weight-it);
+}
+
+/* ── Drill affordance ──────────────────────────────────── */
+
+/* Italian spans with attached drill audio are interactive: click or
+ * press Enter/Space to hear them pronounced. */
+[lang="it"][data-audio] {
+    cursor: pointer;
+    border-radius: 2px;
+    padding: 0 0.125em;
+    margin: 0 -0.125em;        /* keep horizontal rhythm intact */
+    transition: background-color 120ms ease;
+}
+
+[lang="it"][data-audio]:hover,
+[lang="it"][data-audio]:focus-visible {
+    background-color: var(--drill-hover);
+    outline: none;
+    text-decoration: underline dotted;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
+
+[lang="it"][data-audio]:focus-visible {
+    outline: 2px solid var(--color-it);
+    outline-offset: 1px;
+}
+
+[lang="it"][data-audio].playing {
+    background-color: var(--drill-playing);
+    text-decoration: underline solid;
+    text-decoration-thickness: 2px;
+}
+
+/* ── Article wrappers ──────────────────────────────────── */
+
+.weave,
+.fragment {
+    /* Let content take the parent's measure; no extra constraints. */
+}
+
+/* Narrow horizontal spacing between consecutive foreign spans so the
+ * prose still reads naturally — e.g. "ses <span>schiavi</span>
+ * <span>(les esclaves)</span>." */
+[lang] + [lang] { margin-left: 0 !important; }

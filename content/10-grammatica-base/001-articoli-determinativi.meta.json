@@ -1,0 +1,18 @@
+{
+  "id": "001-articoli-determinativi",
+  "title": "Gli articoli determinativi",
+  "level": "A1-reference",
+  "topic_area": "Italian grammar",
+  "grammar_features_introduced": [
+    "the seven definite article forms: il, lo, l' (m sing); i, gli (m plur); la, l' (f sing); le (f plur)",
+    "phonological rule for masculine: il (default) / lo (s+cons, z, gn, ps, pn, x, y) / l' (vowel)",
+    "plural transformations: il → i, lo → gli, l' (m) → gli, la → le, l' (f) → le",
+    "contrast with French (single plural form) and Spanish (phonological symmetry)"
+  ],
+  "pronunciation_features_introduced": [
+    "article + noun as a phonological unit (article liaison into noun)"
+  ],
+  "cognate_patterns_showcased": [],
+  "prerequisites": [],
+  "notes": "First A1 grammar lesson, English-framed with French comparisons. Article forms in English <em> emphasis (so they’re not themselves wrapped as Italian spans — avoids sub-threshold drills for 2-char articles). All Italian examples are article+noun phrases, which are drill-length and let the learner hear each article in its natural phonological context."
+}
