@@ -54,6 +54,7 @@ async fn run() -> CmdResult {
         "serve" => cmd_serve(&args),
         "audit-shares" => cmd_audit_shares(&args),
         "extract-vocab" => cmd_extract_vocab(&args),
+        "prune-vocab" => cmd_prune_vocab(&args),
         "vocab-page" => cmd_vocab_page(&args),
         "verify-language" => cmd_verify_language(&args),
         "check-csp" => cmd_check_csp(&args),
@@ -74,6 +75,7 @@ fn print_usage(prog: &str) {
     eprintln!("  {prog} serve          [--port N] [--site DIR]");
     eprintln!("  {prog} audit-shares   [<chapter>] [--tolerance N] [--quick-audit <file.html>]");
     eprintln!("  {prog} extract-vocab  [<chapter>]");
+    eprintln!("  {prog} prune-vocab    <chapter>");
     eprintln!("  {prog} vocab-page     <chapter>");
     eprintln!("  {prog} verify-language [<chapter>] [--fix]");
     eprintln!("  {prog} check-csp      [--site DIR]");
@@ -125,8 +127,16 @@ fn print_help(prog: &str) {
     println!("                 single vocabolario.html, grouped by lesson slug,");
     println!("                 with drill audio wired on each Italian term using");
     println!("                 the existing <hash>.mp3 files. Deduplicates terms");
-    println!("                 across lessons (each term appears once, in the");
-    println!("                 section of the lesson where it first appeared).");
+    println!("                 across lessons, and collapses bare-vs-article-");
+    println!("                 bearing pairs of the same headword (e.g. `pasta`");
+    println!("                 and `la pasta`) into a single article-bearing");
+    println!("                 entry so each noun appears once.");
+    println!();
+    println!("  prune-vocab    Remove entries from each lesson's vocab.json whose");
+    println!("                 Italian text no longer appears as a <span lang=\"it\">");
+    println!("                 in any current lesson HTML for that chapter. Run");
+    println!("                 after revising lesson content to clean out stale");
+    println!("                 entries; glosses on surviving items are preserved.");
     println!();
     println!("  verify-language Check or fix Italian typographic rules");
     println!("                 (apostrophes, ellipsis) in text content files.");
@@ -702,6 +712,100 @@ fn extract_vocab_chapter(content_dir: &Path) -> CmdResult {
     Ok(())
 }
 
+// ── prune-vocab ─────────────────────────────────────────────────────────
+
+fn cmd_prune_vocab(args: &[String]) -> CmdResult {
+    let chapter = args
+        .get(2)
+        .cloned()
+        .ok_or("prune-vocab requires a chapter name")?;
+
+    let content_dir = PathBuf::from("content").join(&chapter);
+    if !content_dir.is_dir() {
+        return Err(format!("no such chapter: {}", content_dir.display()).into());
+    }
+
+    let config_path = content_dir.join("chapter.toml");
+    let config_str = std::fs::read_to_string(&config_path)?;
+    let config: site_gen::config::ChapterConfig = toml::from_str(&config_str)?;
+
+    // Walk all weave lessons in the chapter and collect the canonical
+    // form of every Italian span currently on a page. Canonical form
+    // is the same one used by the drill pipeline, so apostrophe
+    // variants (ASCII vs U+2019) match automatically.
+    let mut current_canonicals: HashSet<String> = HashSet::new();
+    for section in &config.sections {
+        for page in &section.pages {
+            if page.page_type != "weave" {
+                continue;
+            }
+            let lesson_path = content_dir.join(format!("{}.html", page.slug));
+            let Ok(html) = std::fs::read_to_string(&lesson_path) else {
+                continue;
+            };
+            for span in weave::extract::extract_italian_spans(&html) {
+                let canonical = weave::normalize_for_hash(&span.text);
+                if !canonical.is_empty() {
+                    current_canonicals.insert(canonical);
+                }
+            }
+        }
+    }
+
+    // For each weave lesson's vocab.json, drop items whose canonical
+    // form isn't in the current set. Preserve everything else (glosses
+    // intact).
+    let chapter_name = content_dir
+        .file_name()
+        .and_then(|n| n.to_str())
+        .unwrap_or("");
+    println!("Pruning vocab: {chapter_name}");
+
+    let mut total_pruned = 0;
+    for section in &config.sections {
+        for page in &section.pages {
+            if page.page_type != "weave" {
+                continue;
+            }
+            let vocab_path = content_dir.join(format!("{}.vocab.json", page.slug));
+            let Ok(raw) = std::fs::read_to_string(&vocab_path) else {
+                continue;
+            };
+            let vocab: VocabFile = serde_json::from_str(&raw)
+                .map_err(|e| format!("parsing {}: {e}", vocab_path.display()))?;
+            let before = vocab.items.len();
+            let retained: Vec<VocabItem> = vocab
+                .items
+                .into_iter()
+                .filter(|item| {
+                    let canonical = weave::normalize_for_hash(&item.it);
+                    current_canonicals.contains(&canonical)
+                })
+                .collect();
+            let pruned = before - retained.len();
+            if pruned > 0 {
+                let out = VocabFile { items: retained };
+                std::fs::write(&vocab_path, serde_json::to_string_pretty(&out)? + "\n")?;
+                println!(
+                    "  {}.vocab.json: pruned {pruned}, kept {}",
+                    page.slug,
+                    out.items.len(),
+                );
+                total_pruned += pruned;
+            } else {
+                println!("  {}.vocab.json: no changes", page.slug);
+            }
+        }
+    }
+
+    if total_pruned > 0 {
+        println!("\nPruned {total_pruned} stale item(s) total.");
+    } else {
+        println!("\nAll vocab entries match current lesson content.");
+    }
+    Ok(())
+}
+
 // ── vocab-page ──────────────────────────────────────────────────────────
 
 fn cmd_vocab_page(args: &[String]) -> CmdResult {
@@ -754,6 +858,13 @@ fn cmd_vocab_page(args: &[String]) -> CmdResult {
         }
     }
 
+    // Second-pass dedup: collapse entries that share a bare form but
+    // differ on article (`pasta` / `la pasta` / `una pasta`). Keep the
+    // variant with the highest article_priority — definite > indefinite
+    // > bare — so the vocabolario shows one form per noun, with gender
+    // visible.
+    let sections = collapse_bare_article_pairs(sections);
+
     let html = render_vocab_page(&sections);
     let out_path = content_dir.join("vocabolario.html");
     std::fs::write(&out_path, html)?;
@@ -768,6 +879,62 @@ fn cmd_vocab_page(args: &[String]) -> CmdResult {
         dropped,
     );
     Ok(())
+}
+
+/// Collapse vocab entries that share a bare headword (modulo leading
+/// article) across the entire aggregated vocabolario. Each resulting
+/// section retains at most one entry per bare form; the surviving
+/// variant is the one with the highest article priority — definite
+/// article > indefinite article > bare — so the final page displays
+/// `la pasta` rather than `pasta` and `il Parmigiano Reggiano` rather
+/// than `Parmigiano Reggiano`.
+fn collapse_bare_article_pairs(
+    sections: Vec<(String, String, Vec<VocabItem>)>,
+) -> Vec<(String, String, Vec<VocabItem>)> {
+    // Pass 1: index every item by its bare form, noting section and
+    // position for later removal.
+    let mut bare_map: std::collections::HashMap<String, Vec<(usize, usize)>> =
+        std::collections::HashMap::new();
+    for (si, (_, _, items)) in sections.iter().enumerate() {
+        for (ii, item) in items.iter().enumerate() {
+            let bare = italian::bare_form(&item.it);
+            bare_map.entry(bare).or_default().push((si, ii));
+        }
+    }
+
+    // Pass 2: for each bare form with multiple entries, pick the
+    // highest-priority variant and mark the others for removal.
+    let mut to_remove: HashSet<(usize, usize)> = HashSet::new();
+    for positions in bare_map.values() {
+        if positions.len() < 2 {
+            continue;
+        }
+        let preferred = positions
+            .iter()
+            .copied()
+            .max_by_key(|&(si, ii)| italian::article_priority(&sections[si].2[ii].it))
+            .expect("non-empty slice");
+        for &pos in positions {
+            if pos != preferred {
+                to_remove.insert(pos);
+            }
+        }
+    }
+
+    // Pass 3: rebuild sections excluding the marked positions.
+    sections
+        .into_iter()
+        .enumerate()
+        .map(|(si, (slug, title, items))| {
+            let kept: Vec<VocabItem> = items
+                .into_iter()
+                .enumerate()
+                .filter(|(ii, _)| !to_remove.contains(&(si, *ii)))
+                .map(|(_, item)| item)
+                .collect();
+            (slug, title, kept)
+        })
+        .collect()
 }
 
 fn render_vocab_page(sections: &[(String, String, Vec<VocabItem>)]) -> String {
@@ -1332,6 +1499,130 @@ mod tests {
     fn gloss_cell_escapes_html_in_french_content() {
         let out = render_gloss_cell("A & B", Some("fr"), "French");
         assert!(out.contains(r#"<span lang="fr">A &amp; B</span>"#));
+    }
+
+    // ── collapse_bare_article_pairs ─────────────────────────────────
+
+    fn vocab_item(it: &str) -> VocabItem {
+        VocabItem {
+            it: it.to_string(),
+            fr: String::new(),
+            en: String::new(),
+            es: String::new(),
+            pattern: String::new(),
+        }
+    }
+
+    fn section_texts(sections: &[(String, String, Vec<VocabItem>)]) -> Vec<Vec<String>> {
+        sections
+            .iter()
+            .map(|(_, _, items)| items.iter().map(|i| i.it.clone()).collect())
+            .collect()
+    }
+
+    #[test]
+    fn collapse_prefers_definite_over_bare() {
+        let sections = vec![(
+            "001".to_string(),
+            "Section".to_string(),
+            vec![vocab_item("pasta"), vocab_item("la pasta")],
+        )];
+        let collapsed = collapse_bare_article_pairs(sections);
+        assert_eq!(section_texts(&collapsed), vec![vec!["la pasta".to_string()]]);
+    }
+
+    #[test]
+    fn collapse_prefers_definite_over_indefinite() {
+        let sections = vec![(
+            "001".to_string(),
+            "Section".to_string(),
+            vec![vocab_item("una pasta"), vocab_item("la pasta")],
+        )];
+        let collapsed = collapse_bare_article_pairs(sections);
+        assert_eq!(section_texts(&collapsed), vec![vec!["la pasta".to_string()]]);
+    }
+
+    #[test]
+    fn collapse_prefers_indefinite_over_bare() {
+        let sections = vec![(
+            "001".to_string(),
+            "Section".to_string(),
+            vec![vocab_item("libro"), vocab_item("un libro")],
+        )];
+        let collapsed = collapse_bare_article_pairs(sections);
+        assert_eq!(section_texts(&collapsed), vec![vec!["un libro".to_string()]]);
+    }
+
+    #[test]
+    fn collapse_handles_case_differences() {
+        // `La pasta` (sentence-initial) and `la pasta` (mid-sentence)
+        // share a bare form and collapse.
+        let sections = vec![(
+            "001".to_string(),
+            "Section".to_string(),
+            vec![vocab_item("La pasta"), vocab_item("la pasta")],
+        )];
+        let collapsed = collapse_bare_article_pairs(sections);
+        // One survives; both are priority 3, so whichever came first.
+        let texts = section_texts(&collapsed);
+        assert_eq!(texts[0].len(), 1);
+        assert!(texts[0][0].eq_ignore_ascii_case("la pasta"));
+    }
+
+    #[test]
+    fn collapse_spans_multiple_sections() {
+        // Two sections, each with a variant — one survives overall.
+        let sections = vec![
+            (
+                "001".to_string(),
+                "First".to_string(),
+                vec![vocab_item("pasta")],
+            ),
+            (
+                "002".to_string(),
+                "Second".to_string(),
+                vec![vocab_item("la pasta")],
+            ),
+        ];
+        let collapsed = collapse_bare_article_pairs(sections);
+        let texts = section_texts(&collapsed);
+        assert_eq!(texts[0], Vec::<String>::new());
+        assert_eq!(texts[1], vec!["la pasta".to_string()]);
+    }
+
+    #[test]
+    fn collapse_leaves_unrelated_forms_alone() {
+        // Different bare forms don't collapse.
+        let sections = vec![(
+            "001".to_string(),
+            "Section".to_string(),
+            vec![
+                vocab_item("la pasta"),
+                vocab_item("la pasta secca"),
+                vocab_item("il pomodoro"),
+            ],
+        )];
+        let collapsed = collapse_bare_article_pairs(sections);
+        assert_eq!(
+            section_texts(&collapsed),
+            vec![vec![
+                "la pasta".to_string(),
+                "la pasta secca".to_string(),
+                "il pomodoro".to_string(),
+            ]],
+        );
+    }
+
+    #[test]
+    fn collapse_works_with_elided_articles() {
+        let sections = vec![(
+            "001".to_string(),
+            "Section".to_string(),
+            vec![vocab_item("acqua"), vocab_item("l\u{2019}acqua")],
+        )];
+        let collapsed = collapse_bare_article_pairs(sections);
+        let texts = section_texts(&collapsed);
+        assert_eq!(texts[0], vec!["l\u{2019}acqua".to_string()]);
     }
 
     #[test]

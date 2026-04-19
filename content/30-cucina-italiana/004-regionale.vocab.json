@@ -26,19 +26,9 @@
       "en": "to speak of Italian cuisine"
     },
     {
-      "it": "Al nord",
-      "fr": "au nord",
-      "en": "in the north"
-    },
-    {
       "it": "le montagne dominano",
       "fr": "les montagnes dominent",
       "en": "the mountains dominate"
-    },
-    {
-      "it": "la cucina è pesante",
-      "fr": "la cuisine est copieuse",
-      "en": "the cooking is heavy / rich"
     },
     {
       "it": "Il grasso dominante è il burro",
@@ -91,21 +81,6 @@
       "en": "Bologna, Parma, Modena"
     },
     {
-      "it": "la terra del parmigiano reggiano",
-      "fr": "la terre du parmigiano reggiano",
-      "en": "the land of Parmigiano Reggiano"
-    },
-    {
-      "it": "del prosciutto di Parma",
-      "fr": "du jambon de Parme",
-      "en": "of Parma ham"
-    },
-    {
-      "it": "dell’aceto balsamico tradizionale",
-      "fr": "du vinaigre balsamique traditionnel",
-      "en": "of traditional balsamic vinegar"
-    },
-    {
       "it": "delle tagliatelle al ragù",
       "fr": "des tagliatelle au ragù",
       "en": "of tagliatelle with ragù"
@@ -114,11 +89,6 @@
       "it": "dei tortellini in brodo",
       "fr": "des tortellini en bouillon",
       "en": "of tortellini in broth"
-    },
-    {
-      "it": "in Emilia si mangia meglio",
-      "fr": "en Émilie on mange mieux",
-      "en": "in Emilia one eats better"
     },
     {
       "it": "non è una battuta",
@@ -154,16 +124,6 @@
       "it": "il sale era caro",
       "fr": "le sel était cher",
       "en": "salt was expensive"
-    },
-    {
-      "it": "la ribollita",
-      "fr": "la ribollita (soupe toscane)",
-      "en": "ribollita (Tuscan soup)"
-    },
-    {
-      "it": "la panzanella",
-      "fr": "la panzanella (salade de pain toscane)",
-      "en": "panzanella (Tuscan bread salad)"
     },
     {
       "it": "il pane vecchio",
@@ -226,11 +186,6 @@
       "en": "Roman-style"
     },
     {
-      "it": "Al sud il clima è mediterraneo",
-      "fr": "au sud le climat est méditerranéen",
-      "en": "in the south the climate is Mediterranean"
-    },
-    {
       "it": "Il pomodoro è arrivato",
       "fr": "la tomate est arrivée",
       "en": "the tomato arrived"
@@ -249,11 +204,6 @@
       "it": "la pizza",
       "fr": "la pizza",
       "en": "pizza"
-    },
-    {
-      "it": "la mozzarella di bufala",
-      "fr": "la mozzarella de bufflonne",
-      "en": "buffalo-milk mozzarella"
     },
     {
       "it": "il ragù napoletano",

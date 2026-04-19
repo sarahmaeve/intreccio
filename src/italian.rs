@@ -152,6 +152,85 @@ pub fn normalize_roman_numerals(text: &str) -> String {
     out.join(" ")
 }
 
+// ── Article-aware lexical helpers ───────────────────────────────────────
+//
+// Used by the vocabolario aggregator to collapse entries that differ
+// only in whether they carry a leading article: `pasta`, `la pasta`,
+// and `una pasta` share a bare form and should appear once on the
+// page, with the highest-priority article-bearing variant preferred.
+
+/// Leading Italian articles that are whole words, followed by a space.
+const ARTICLES_WITH_SPACE_DEFINITE: &[&str] = &[
+    "il ", "lo ", "la ", "i ", "gli ", "le ",
+];
+const ARTICLES_WITH_SPACE_INDEFINITE: &[&str] = &[
+    "un ", "uno ", "una ",
+];
+
+/// Elided articles that run directly into the next word without a space.
+const ARTICLES_ELIDED_DEFINITE: &[&str] = &["l'", "l\u{2019}"];
+const ARTICLES_ELIDED_INDEFINITE: &[&str] = &["un'", "un\u{2019}"];
+
+/// Return the "bare form" of an Italian phrase: the phrase with its
+/// leading article removed (if any), lowercased for comparison.
+///
+/// Used to recognize that `pasta`, `la pasta`, and `La pasta` share a
+/// common headword so that the vocabolario page can present only one
+/// of them.
+pub fn bare_form(text: &str) -> String {
+    let lower = text.to_lowercase();
+    for prefix in ARTICLES_WITH_SPACE_DEFINITE
+        .iter()
+        .chain(ARTICLES_WITH_SPACE_INDEFINITE.iter())
+    {
+        if let Some(rest) = lower.strip_prefix(prefix) {
+            return rest.to_string();
+        }
+    }
+    for prefix in ARTICLES_ELIDED_DEFINITE
+        .iter()
+        .chain(ARTICLES_ELIDED_INDEFINITE.iter())
+    {
+        if let Some(rest) = lower.strip_prefix(prefix) {
+            return rest.to_string();
+        }
+    }
+    lower
+}
+
+/// Priority a vocab entry has when two entries share a bare form.
+///
+/// - `3` — entry starts with a definite article (`il libro`, `la casa`,
+///   `l'acqua`). Pedagogically the most useful form because it reveals
+///   gender; this is the dictionary convention for Italian.
+/// - `2` — entry starts with an indefinite article (`un libro`,
+///   `un'amica`). Also reveals gender, just less conventionally.
+/// - `1` — bare headword (`libro`, `casa`, `acqua`). Fallback.
+pub fn article_priority(text: &str) -> u32 {
+    let lower = text.to_lowercase();
+    for prefix in ARTICLES_WITH_SPACE_DEFINITE {
+        if lower.starts_with(prefix) {
+            return 3;
+        }
+    }
+    for prefix in ARTICLES_ELIDED_DEFINITE {
+        if lower.starts_with(prefix) {
+            return 3;
+        }
+    }
+    for prefix in ARTICLES_WITH_SPACE_INDEFINITE {
+        if lower.starts_with(prefix) {
+            return 2;
+        }
+    }
+    for prefix in ARTICLES_ELIDED_INDEFINITE {
+        if lower.starts_with(prefix) {
+            return 2;
+        }
+    }
+    1
+}
+
 /// Split a word into `(core, trailing_punct)` by finding the last
 /// alphanumeric character. If the word has no alphanumeric character,
 /// returns `(word, "")`.
@@ -350,5 +429,101 @@ mod tests {
         assert_eq!(split_trailing_non_alnum("XIII);"), ("XIII", ");"));
         assert_eq!(split_trailing_non_alnum(""), ("", ""));
         assert_eq!(split_trailing_non_alnum(".,!"), (".,!", ""));
+    }
+
+    // ── bare_form ───────────────────────────────────────────────────
+
+    #[test]
+    fn bare_form_strips_definite_articles_with_space() {
+        assert_eq!(bare_form("il libro"), "libro");
+        assert_eq!(bare_form("la casa"), "casa");
+        assert_eq!(bare_form("lo studente"), "studente");
+        assert_eq!(bare_form("i libri"), "libri");
+        assert_eq!(bare_form("gli amici"), "amici");
+        assert_eq!(bare_form("le case"), "case");
+    }
+
+    #[test]
+    fn bare_form_strips_indefinite_articles_with_space() {
+        assert_eq!(bare_form("un libro"), "libro");
+        assert_eq!(bare_form("uno studente"), "studente");
+        assert_eq!(bare_form("una casa"), "casa");
+    }
+
+    #[test]
+    fn bare_form_strips_elided_articles_typographic_and_ascii() {
+        // typographic apostrophe
+        assert_eq!(bare_form("l\u{2019}acqua"), "acqua");
+        assert_eq!(bare_form("un\u{2019}amica"), "amica");
+        // ASCII apostrophe
+        assert_eq!(bare_form("l'acqua"), "acqua");
+        assert_eq!(bare_form("un'amica"), "amica");
+    }
+
+    #[test]
+    fn bare_form_returns_lowercased_when_no_article() {
+        assert_eq!(bare_form("pasta"), "pasta");
+        assert_eq!(bare_form("Pasta"), "pasta");
+        assert_eq!(bare_form("ROMA"), "roma");
+    }
+
+    #[test]
+    fn bare_form_treats_mixed_case_articles() {
+        // Sentence-initial capitalization shouldn't hide the article.
+        assert_eq!(bare_form("La casa"), "casa");
+        assert_eq!(bare_form("Un libro"), "libro");
+    }
+
+    #[test]
+    fn bare_form_preserves_multi_word_remainder() {
+        assert_eq!(bare_form("la pasta secca"), "pasta secca");
+        assert_eq!(bare_form("l'olio d'oliva"), "olio d'oliva");
+    }
+
+    #[test]
+    fn bare_form_does_not_strip_non_article_prefixes() {
+        // `del`, `alla`, `nel` etc. are prepositions or contractions,
+        // not articles — bare_form leaves them intact.
+        assert_eq!(bare_form("del pane"), "del pane");
+        assert_eq!(bare_form("alla milanese"), "alla milanese");
+        assert_eq!(bare_form("nel forno"), "nel forno");
+    }
+
+    // ── article_priority ────────────────────────────────────────────
+
+    #[test]
+    fn article_priority_definite_is_3() {
+        for t in &[
+            "il libro",
+            "la casa",
+            "lo studente",
+            "i libri",
+            "gli amici",
+            "le case",
+            "l'acqua",
+            "l\u{2019}acqua",
+        ] {
+            assert_eq!(article_priority(t), 3, "definite article priority for {t:?}");
+        }
+    }
+
+    #[test]
+    fn article_priority_indefinite_is_2() {
+        for t in &[
+            "un libro",
+            "uno studente",
+            "una casa",
+            "un'amica",
+            "un\u{2019}amica",
+        ] {
+            assert_eq!(article_priority(t), 2, "indefinite article priority for {t:?}");
+        }
+    }
+
+    #[test]
+    fn article_priority_bare_is_1() {
+        for t in &["pasta", "Roma", "carbonara", "del pane"] {
+            assert_eq!(article_priority(t), 1, "bare priority for {t:?}");
+        }
     }
 }
