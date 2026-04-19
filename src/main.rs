@@ -779,7 +779,9 @@ fn render_vocab_page(sections: &[(String, String, Vec<VocabItem>)]) -> String {
          All Italian terms and phrases from the cooking weave lessons, in order \
          of first appearance. Click any Italian term to hear it pronounced — \
          drill audio is shared with the lessons, so the voice for a given term \
-         is the same one you heard while reading.\
+         is the same one you heard while reading. French and English translations \
+         are blurred by default; click any gloss to reveal it, and click again \
+         to hide.\
          </p>\n\n",
     );
 
@@ -818,24 +820,54 @@ fn render_vocab_page(sections: &[(String, String, Vec<VocabItem>)]) -> String {
                 escape_attr(&audio),
                 escape_text(&item.it),
             ));
-            let fr_cell = if item.fr.is_empty() {
-                "<span class=\"vocab-empty\">—</span>".to_string()
-            } else {
-                format!("<span lang=\"fr\">{}</span>", escape_text(&item.fr))
-            };
-            let en_cell = if item.en.is_empty() {
-                "<span class=\"vocab-empty\">—</span>".to_string()
-            } else {
-                escape_text(&item.en)
-            };
-            html.push_str(&format!("  <td class=\"vocab-fr\">{fr_cell}</td>\n"));
-            html.push_str(&format!("  <td class=\"vocab-en\">{en_cell}</td>\n"));
+            html.push_str(&format!(
+                "  <td class=\"vocab-fr\">{}</td>\n",
+                render_gloss_cell(&item.fr, Some("fr"), "French"),
+            ));
+            html.push_str(&format!(
+                "  <td class=\"vocab-en\">{}</td>\n",
+                render_gloss_cell(&item.en, None, "English"),
+            ));
             html.push_str("</tr>\n");
         }
         html.push_str("</tbody>\n</table>\n</section>\n\n");
     }
 
     html
+}
+
+/// Render one gloss cell's inner content.
+///
+/// An empty gloss renders as a plain em-dash span (not clickable,
+/// there's nothing to reveal). A non-empty gloss is wrapped in a
+/// `.gloss` element that's keyboard-focusable and role="button"; the
+/// site-wide `gloss.js` toggles a `.revealed` class on click or
+/// Enter/Space, which removes the CSS blur that hides the text by
+/// default.
+///
+/// `lang` is the BCP 47 code to wrap the gloss text in for styling
+/// and accessibility (`Some("fr")` for French glosses; `None` for
+/// English, which doesn't need a lang wrapper since the page is
+/// already `lang="en"`). `language_name` is the human-readable
+/// language name used in the aria-label ("Reveal French translation").
+fn render_gloss_cell(content: &str, lang: Option<&str>, language_name: &str) -> String {
+    if content.is_empty() {
+        return "<span class=\"vocab-empty\">—</span>".to_string();
+    }
+    let inner = match lang {
+        Some(l) => format!(
+            "<span lang=\"{}\">{}</span>",
+            escape_attr(l),
+            escape_text(content),
+        ),
+        None => escape_text(content),
+    };
+    format!(
+        "<span class=\"gloss\" tabindex=\"0\" role=\"button\" \
+         aria-expanded=\"false\" aria-label=\"Reveal {lang_name} translation\">\
+         {inner}</span>",
+        lang_name = escape_attr(language_name),
+    )
 }
 
 /// Escape text content for embedding between HTML tags.
@@ -1216,7 +1248,7 @@ mod tests {
         // Italian term has a drill-audio attribute
         assert!(html.contains(r#"<span lang="it" data-audio="audio/drills/"#));
         assert!(html.contains("la storia"));
-        // French and English glosses appear
+        // French and English glosses appear inside the rendered page
         assert!(html.contains("l\u{2019}histoire") || html.contains("l'histoire"));
         assert!(html.contains("history"));
         // Section anchor
@@ -1237,8 +1269,62 @@ mod tests {
             }],
         )];
         let html = render_vocab_page(&sections);
-        // Missing glosses show as em-dash spans, not blank cells
+        // Missing glosses show as plain em-dash spans, not reveal buttons
         assert!(html.contains("<span class=\"vocab-empty\">—</span>"));
+        // And the gloss-reveal wrapper must NOT appear when content is empty
+        assert!(!html.contains("class=\"gloss\""));
+    }
+
+    // ── render_gloss_cell ───────────────────────────────────────────
+
+    #[test]
+    fn gloss_cell_empty_renders_em_dash_only() {
+        assert_eq!(
+            render_gloss_cell("", Some("fr"), "French"),
+            "<span class=\"vocab-empty\">—</span>",
+        );
+        assert_eq!(
+            render_gloss_cell("", None, "English"),
+            "<span class=\"vocab-empty\">—</span>",
+        );
+    }
+
+    #[test]
+    fn gloss_cell_wraps_french_content_in_reveal_span() {
+        let out = render_gloss_cell("l'histoire", Some("fr"), "French");
+        // keyboard-focusable, screen-reader-announced as a button
+        assert!(out.contains(r#"class="gloss""#));
+        assert!(out.contains(r#"tabindex="0""#));
+        assert!(out.contains(r#"role="button""#));
+        assert!(out.contains(r#"aria-expanded="false""#));
+        assert!(out.contains(r#"aria-label="Reveal French translation""#));
+        // inner text is wrapped in lang="fr"
+        assert!(out.contains(r#"<span lang="fr">l'histoire</span>"#));
+    }
+
+    #[test]
+    fn gloss_cell_wraps_english_content_without_lang_attribute() {
+        // English glosses skip the inner lang wrapper (page is already en).
+        let out = render_gloss_cell("history", None, "English");
+        assert!(out.contains(r#"class="gloss""#));
+        assert!(out.contains(r#"aria-label="Reveal English translation""#));
+        // No lang="en" wrapper on the content itself
+        assert!(!out.contains(r#"lang="en""#));
+        // Text appears directly inside the gloss span
+        assert!(out.contains(">history</span>"));
+    }
+
+    #[test]
+    fn gloss_cell_escapes_html_in_content() {
+        let out = render_gloss_cell("<script>alert(1)</script>", None, "English");
+        assert!(out.contains("&lt;script&gt;"));
+        assert!(!out.contains("<script>"));
+    }
+
+    #[test]
+    fn gloss_cell_escapes_html_in_french_content() {
+        let out = render_gloss_cell("A & B", Some("fr"), "French");
+        assert!(out.contains(r#"<span lang="fr">A &amp; B</span>"#));
     }
 
     #[test]

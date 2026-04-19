@@ -300,6 +300,41 @@ code {
     font-style: italic;
 }
 
+/* Click-to-reveal glosses. Default state is blurred so the reader can
+ * self-test before revealing. Screen readers always see the plain
+ * text — blur is purely a visual aid, not an access mechanism. */
+.gloss {
+    cursor: pointer;
+    display: inline-block;
+    padding: 0.05em 0.2em;
+    margin: -0.05em -0.2em;
+    border-radius: 3px;
+    filter: blur(4px);
+    transition: filter 180ms ease, background-color 120ms ease;
+    user-select: none;
+}
+
+.gloss:hover,
+.gloss:focus-visible {
+    background-color: rgba(20, 83, 45, 0.08);
+    outline: none;
+}
+
+.gloss:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+}
+
+.gloss.revealed {
+    filter: none;
+    cursor: default;
+    user-select: text;
+}
+
+.gloss.revealed:hover {
+    background-color: transparent;
+}
+
 /* Ensure narrow measure on large screens, wider measure on small. */
 @media (max-width: 640px) {
     body { padding: 1rem 0.75rem 3rem; }
